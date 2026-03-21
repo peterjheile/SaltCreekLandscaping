@@ -1,0 +1,63 @@
+############################
+# 🔐 ENV / SECRETS
+############################
+.env
+.env.*
+*.env
+
+############################
+# 🐍 PYTHON / DJANGO
+############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django stuff
+*.log
+staticfiles/
+media/
+
+# Migrations (optional — see note below)
+# backend/**/migrations/*
+# !backend/**/migrations/__init__.py
+
+############################
+# 🟢 NODE / FRONTEND
+############################
+node_modules/
+dist/
+build/
+coverage/
+
+# Vite specific
+frontend/node_modules/
+frontend/dist/
+
+############################
+# 🧠 IDE / EDITOR
+############################
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+############################
+# 🐳 DOCKER (if used later)
+############################
+*.pid
+*.seed
+
+############################
+# 📦 MISC
+############################
+*.bak
+*.tmp
+*.cache

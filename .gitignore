@@ -19,26 +19,24 @@ venv/
 env/
 .venv/
 
-# Django stuff
+# Django
 *.log
 staticfiles/
 media/
 
-# Migrations (optional — see note below)
-# backend/**/migrations/*
-# !backend/**/migrations/__init__.py
-
 ############################
-# 🟢 NODE / FRONTEND
+# 🟢 NEXT.JS / NODE
 ############################
 node_modules/
+.next/
+out/
 dist/
 build/
 coverage/
 
-# Vite specific
-frontend/node_modules/
-frontend/dist/
+# Optional (only if using)
+.vercel/
+.turbo/
 
 ############################
 # 🧠 IDE / EDITOR
@@ -50,7 +48,7 @@ frontend/dist/
 .DS_Store
 
 ############################
-# 🐳 DOCKER (if used later)
+# 🐳 DOCKER / SYSTEM
 ############################
 *.pid
 *.seed
@@ -61,3 +59,10 @@ frontend/dist/
 *.bak
 *.tmp
 *.cache
+
+############################
+# 🔥 OS / SYSTEM FILES
+############################
+Thumbs.db
+ehthumbs.db
+Desktop.ini

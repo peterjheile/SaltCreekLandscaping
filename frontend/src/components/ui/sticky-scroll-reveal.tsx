@@ -1,22 +1,28 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 type StickyScrollItem = {
   title: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
+  ctaText?: string;
+  ctaLink?: string;
   content?: React.ReactNode;
+};
+
+type StickyScrollProps = {
+  content: StickyScrollItem[];
+  contentClassName?: string;
 };
 
 export const StickyScroll = ({
   content,
   contentClassName,
-}: {
-  content: StickyScrollItem[];
-  contentClassName?: string;
-}) => {
+}: StickyScrollProps) => {
   const [activeCard, setActiveCard] = useState(0);
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,11 +31,11 @@ export const StickyScroll = ({
     [content]
   );
 
-  const backgroundColors = ["#0f172a", "#000000", "#171717"];
+  const backgroundColors = ["#ffffff", "#f8f8f7", "#f1f5f9"];
   const linearGradients = [
-    "linear-gradient(to bottom right, #06b6d4, #10b981)",
-    "linear-gradient(to bottom right, #ec4899, #6366f1)",
-    "linear-gradient(to bottom right, #f97316, #eab308)",
+    "linear-gradient(to bottom right, #dbeafe, #bfdbfe)",
+    "linear-gradient(to bottom right, #e2e8f0, #cbd5e1)",
+    "linear-gradient(to bottom right, #dcfce7, #bbf7d0)",
   ];
 
   const [backgroundGradient, setBackgroundGradient] = useState(
@@ -47,7 +53,6 @@ export const StickyScroll = ({
 
         const rect = el.getBoundingClientRect();
 
-        // Activate when the TOP of the item reaches halfway up the viewport
         if (rect.top <= triggerLine) {
           currentActive = index;
         }
@@ -70,6 +75,8 @@ export const StickyScroll = ({
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
   }, [activeCard]);
 
+  const activeItem = content[activeCard];
+
   return (
     <motion.section
       ref={sectionRef}
@@ -84,24 +91,32 @@ export const StickyScroll = ({
             <div
               key={`${item.title}-${index}`}
               ref={itemRefs[index]}
-              className={cn(
-                "mt-32",
-                index !== content.length - 1 && "mb-32"
-              )}
+              className={cn("mt-32", index !== content.length - 1 && "mb-32")}
             >
               <motion.h2
-                animate={{ opacity: activeCard === index ? 1 : 0.3 }}
-                className="text-3xl font-bold text-slate-100 md:text-4xl"
+                animate={{ opacity: activeCard === index ? 1 : 0.35 }}
+                className="text-3xl font-bold text-slate-900 md:text-4xl"
               >
                 {item.title}
               </motion.h2>
 
               <motion.p
-                animate={{ opacity: activeCard === index ? 1 : 0.3 }}
-                className="mt-6 max-w-xl text-base leading-8 text-slate-300 md:text-lg"
-              >
-                {item.description}
-              </motion.p>
+                  animate={{ opacity: activeCard === index ? 1 : 0.45 }}
+                  className="mt-6 max-w-xl text-base leading-8 text-slate-700 md:text-lg"
+                >
+                  {item.description}
+                </motion.p>
+
+                {item.ctaText && item.ctaLink && (
+                  <motion.a
+                    href={item.ctaLink}
+                    animate={{ opacity: activeCard === index ? 1 : 0.4 }}
+                    transition={{ duration: 0.25 }}
+                    className="mt-6 inline-block rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    {item.ctaText}
+                  </motion.a>
+                )}
             </div>
           ))}
 
@@ -117,7 +132,24 @@ export const StickyScroll = ({
             contentClassName
           )}
         >
-          {content[activeCard]?.content ?? null}
+          {activeItem?.content ? (
+            activeItem.content
+          ) : (
+            <AnimatePresence>
+              {activeItem?.image ? (
+                <motion.img
+                  key={activeItem.image}
+                  src={activeItem.image}
+                  alt={activeItem.imageAlt ?? activeItem.title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.45, ease: "easeInOut" }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : null}
+            </AnimatePresence>
+          )}
         </motion.div>
       </div>
     </motion.section>

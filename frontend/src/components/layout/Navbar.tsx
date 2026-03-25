@@ -32,6 +32,14 @@ export default function NavbarDemo() {
       name: "Contact",
       link: "#contact",
     },
+        {
+      name: "FAQs",
+      link: "#faqs",
+    },
+    {
+      name: "Reviews",
+      link: "#reviews",
+    },
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

@@ -1,4 +1,6 @@
 "use client";
+// import {RotatingText} from "@/components/ui/rotating-text";
+
 import React from "react";
 import {
   motion,
@@ -9,27 +11,21 @@ import {
 } from "motion/react";
 
 type Product = {
+  id: number;
   title: string;
-  link: string;
+  description: string;
   thumbnail: string;
 };
 
-type HeroParallaxProps = {
-  title?: string;
-  description?: string;
-  products: Product[];
-};
-
-type HeaderProps = {
+export const HeroParallax = ({
+  title,
+  description,
+  products,
+}: {
   title: string;
   description: string;
-};
-
-export const HeroParallax = ({
-  title = "Title Goes Here",
-  description = "Description Goes Here",
-  products,
-}: HeroParallaxProps) => {
+  products: Product[];
+}) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
@@ -41,7 +37,11 @@ export const HeroParallax = ({
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  const springConfig = {
+    stiffness: 300,
+    damping: 30,
+    bounce: 0,
+  };
 
   const translateX = useSpring(
     useTransform(scrollYProgress, [0, 1], [0, 1000]),
@@ -49,87 +49,95 @@ export const HeroParallax = ({
   );
 
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
+    useTransform(scrollYProgress, [0, 1], [0, -700]),
     springConfig
   );
 
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
-    springConfig
-  );
-
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
+    useTransform(scrollYProgress, [0, 0.12], [40, 0]),
     springConfig
   );
 
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
+    useTransform(scrollYProgress, [0, 0.12], [-10, 0]),
+    springConfig
+  );
+
+  const opacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.12], [0.3, 1]),
     springConfig
   );
 
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
+    useTransform(scrollYProgress, [0, 0.12], [-300, 0]),
     springConfig
   );
 
   return (
-    <div
+    <section
       ref={ref}
-      className="relative flex h-[300vh] flex-col overflow-hidden py-40 antialiased [perspective:1000px] [transform-style:preserve-3d]"
+      className={`
+        relative overflow-hidden antialiased
+        flex flex-col
+        py-16 md:py-24
+        [perspective:1000px] [transform-style:preserve-3d]
+        min-h-[180vh] md:min-h-[200vh]
+      `}
     >
       <Header title={title} description={description} />
 
       <motion.div
-        style={{
-          rotateX,
-          rotateZ,
-          translateY,
-          opacity,
-        }}
+        style={{ rotateX, rotateZ, translateY, opacity }}
+        className="mt-6 md:mt-10"
       >
-        <motion.div className="mb-20 flex flex-row-reverse space-x-reverse space-x-20">
-          {firstRow.map((product) => (
+        <motion.div className="mb-6 md:mb-8 flex flex-row-reverse gap-4 md:gap-8">
+          {firstRow.map((product, index) => (
             <ProductCard
-              key={product.title}
+              key={`${product.id}-${index}`}
               product={product}
               translate={translateX}
             />
           ))}
         </motion.div>
 
-        <motion.div className="mb-20 flex flex-row space-x-20">
-          {secondRow.map((product) => (
+        <motion.div className="mb-6 md:mb-8 flex flex-row gap-4 md:gap-8">
+          {secondRow.map((product, index) => (
             <ProductCard
-              key={product.title}
+              key={`${product.id}-${index}`}
               product={product}
               translate={translateXReverse}
             />
           ))}
         </motion.div>
 
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-          {thirdRow.map((product) => (
+        <motion.div className="flex flex-row-reverse gap-4 md:gap-8">
+          {thirdRow.map((product, index) => (
             <ProductCard
-              key={product.title}
+              key={`${product.id}-${index}`}
               product={product}
               translate={translateX}
             />
           ))}
         </motion.div>
       </motion.div>
-    </div>
+    </section>
   );
 };
 
-export const Header = ({ title, description }: HeaderProps) => {
+export const Header = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => {
   return (
-    <div className="relative left-0 top-0 mx-auto w-full max-w-7xl px-4 py-20 md:py-40">
-      <h1 className="text-2xl font-bold dark:text-white md:text-7xl">
+    <div className="relative mx-auto w-full max-w-7xl px-4 pt-4 pb-8 md:pb-12 z-50">
+      <h1 className="text-3xl font-bold md:text-6xl dark:text-white">
         {title}
       </h1>
 
-      <p className="mt-8 max-w-2xl text-base dark:text-neutral-200 md:text-xl">
+      <p className="mt-4 max-w-2xl text-sm md:mt-6 md:text-lg dark:text-neutral-200">
         {description}
       </p>
     </div>
@@ -145,27 +153,27 @@ export const ProductCard = ({
 }) => {
   return (
     <motion.div
-      key={product.title}
       style={{ x: translate }}
-      whileHover={{ y: -20 }}
-      className="group/product relative h-96 w-[30rem] shrink-0"
+      whileHover={{ y: -12 }}
+      className={`
+        group/product relative shrink-0 overflow-hidden rounded-2xl
+        h-56 w-[16rem]
+        sm:h-64 sm:w-[18rem]
+        md:h-72 md:w-[22rem]
+        lg:h-80 lg:w-[26rem]
+      `}
     >
-      <a
-        href={product.link}
-        className="block group-hover/product:shadow-2xl"
-      >
+      <div className="block h-full w-full">
         <img
           src={product.thumbnail}
-          height="600"
-          width="600"
-          className="absolute inset-0 h-full w-full object-cover object-left-top"
           alt={product.title}
+          className="absolute inset-0 h-full w-full object-cover object-left-top"
         />
-      </a>
+      </div>
 
-      <div className="pointer-events-none absolute inset-0 h-full w-full bg-black opacity-0 group-hover/product:opacity-80" />
+      <div className="pointer-events-none absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 group-hover/product:opacity-100" />
 
-      <h2 className="absolute bottom-4 left-4 text-white opacity-0 group-hover/product:opacity-100">
+      <h2 className="absolute bottom-4 left-4 text-white opacity-0 transition-opacity duration-300 group-hover/product:opacity-100">
         {product.title}
       </h2>
     </motion.div>

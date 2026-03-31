@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import ServiceListView
+
+from .views import ServiceCategoryListView
 
 urlpatterns = [
-    path("", ServiceListView.as_view(), name="service-list"),
+    path("categories/", ServiceCategoryListView.as_view(), name="service-category-list"),
 ]

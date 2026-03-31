@@ -2,9 +2,18 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-cinzel: var(--font-cinzel);
+  --font-montserrat: var(--font-montserrat);
+  --font-inter: var(--font-inter);
+
+
+
+
   /* Configure your theme variables here */
   --font-display: "Inter", "sans-serif";
   --color-primary-500: oklch(0.84 0.18 117.33);
@@ -52,6 +61,8 @@
 }
 
 :root {
+
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

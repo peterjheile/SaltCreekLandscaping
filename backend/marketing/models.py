@@ -1,5 +1,21 @@
+from .faqs.models import *
+from .contact.models import *
+from .services.models import *
+from .gallery.models import *
+from .home.models import *
+from .reviews.models import *
+
+
+
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
+
+
+
+
 
 
 class HeroCard(models.Model):
@@ -79,45 +95,6 @@ class FeatureCard(models.Model):
     
 
 
-class ReviewCard(models.Model):
-    name = models.CharField(max_length=255)
-    tag = models.CharField(max_length=255, blank=True)  # e.g. "Homeowner", "Fort Wayne", etc.
-    review = models.TextField()
-
-    image = models.ImageField(upload_to="review_cards/", blank=True, null=True)
-
-    sort_order = models.PositiveIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["sort_order", "id"]
-
-    def __str__(self):
-        return f"{self.name} - {self.tag}" if self.tag else self.name
-
-    def clean(self):
-        super().clean()
-
-        if not self.is_active:
-            return
-
-        active_count = (
-            ReviewCard.objects.filter(is_active=True)
-            .exclude(pk=self.pk)
-            .count()
-        )
-
-        if active_count >= 5:
-            raise ValidationError({
-                "is_active": "You can only have 5 active review cards."
-            })
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
 
 
 
@@ -158,5 +135,13 @@ class HeroContent(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+
+
+
+
+
+    
+
 
 

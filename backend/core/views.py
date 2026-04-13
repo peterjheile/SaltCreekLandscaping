@@ -1,37 +1,17 @@
 from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import NotFound
 
-from .models import SiteSettings, HomePage, AboutSection
-from .serializers import (
-    SiteSettingsSerializer,
-    HomePageSerializer,
-    AboutSectionSerializer,
-)
+from .models import SiteSettings
+from .serializers import SiteSettingsSerializer
 
 
-class SiteSettingsDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        site_settings = SiteSettings.objects.first()
-        if not site_settings:
-            return Response({}, status=200)
+class SiteSettingsView(generics.RetrieveAPIView):
+    serializer_class = SiteSettingsSerializer
+    permission_classes = [AllowAny]
 
-        serializer = SiteSettingsSerializer(site_settings, context={"request": request})
-        return Response(serializer.data)
-
-
-class HomePageDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        homepage = HomePage.objects.first()
-        if not homepage:
-            return Response({}, status=200)
-
-        serializer = HomePageSerializer(homepage, context={"request": request})
-        return Response(serializer.data)
-
-
-class AboutSectionListView(generics.ListAPIView):
-    serializer_class = AboutSectionSerializer
-
-    def get_queryset(self):
-        return AboutSection.objects.filter(is_active=True).order_by("display_order", "id")
+    def get_object(self):
+        obj = SiteSettings.objects.prefetch_related("business_hours").filter(pk=1).first()
+        if not obj:
+            raise NotFound("Site settings have not been created yet.")
+        return obj

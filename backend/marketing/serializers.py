@@ -1,7 +1,17 @@
+from .faqs.serializers import *
+from .contact.serializers import *
+from .services.serializers import *
+from .gallery.serializers import *
+from .home.serializers import *
+from .reviews.serializers import *
+
 # marketing/serializers.py
 
 from rest_framework import serializers
 from .models import HeroCard, FeatureCard, ReviewCard, HeroContent
+from .models import FAQCategory, FAQ
+from .models import ReviewsPageContent
+
 
 
 class HeroCardSerializer(serializers.ModelSerializer):
@@ -55,28 +65,21 @@ class FeatureCardSerializer(serializers.ModelSerializer):
     
 
 
-class ReviewCardSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
-    class Meta:
-        model = ReviewCard
-        fields = ("id", "name", "tag", "review", "image")
-
-    def get_image(self, obj):
-        if not obj.image:
-            return None
-
-        request = self.context.get("request")
-        url = obj.image.url
-
-        if request is not None:
-            return request.build_absolute_uri(url)
-
-        return url
-    
 
 
 class HeroContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = HeroContent
         fields = ("id", "title", "subtitle")
+
+
+
+    
+
+
+
+
+
+
+
+

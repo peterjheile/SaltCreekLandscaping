@@ -1,264 +1,317 @@
 "use client";
 
 import React, { useMemo, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { ReviewCard } from "@/components/ui/review-card";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  MotionValue,
+} from "motion/react";
+import { Star } from "lucide-react";
 
-type ReviewCardData = {
-  name: string;
-  tag: string;
-  image: string;
-  context: string;
+import { ReviewCard } from "@/components/ui/review-card";
+import type { ReviewCardData } from "@/features/marketing/reviews/types";
+
+type EntryDirection =
+  | "top"
+  | "left"
+  | "right"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom"
+  | "bottom-right";
+
+type GridSlot = {
+  from: EntryDirection;
 };
 
 type ReviewRevealProps = {
   reviews: ReviewCardData[];
 };
 
-type CardLayout = {
-  top: string;
-  left: string;
-  fromX: number;
-  fromY: number;
-  fromScale: number;
-  rotate: number;
-};
-
-type BackgroundCardLayout = {
-  top: string;
-  left: string;
-  rotate: number;
-  scale: number;
-};
-
-const ACTIVE_CARD_LAYOUTS: CardLayout[] = [
-  {
-    top: "15%",
-    left: "10%",
-    fromX: -260,
-    fromY: -380,
-    fromScale: 0.72,
-    rotate: -10,
-  },
-  {
-    top: "18%",
-    left: "54%",
-    fromX: 280,
-    fromY: -140,
-    fromScale: 0.76,
-    rotate: 8,
-  },
-  {
-    top: "56%",
-    left: "18%",
-    fromX: -300,
-    fromY: 120,
-    fromScale: 0.74,
-    rotate: -7,
-  },
-  {
-    top: "50%",
-    left: "50%",
-    fromX: 260,
-    fromY: 180,
-    fromScale: 0.78,
-    rotate: 9,
-  },
-  {
-    top: "34%",
-    left: "34%",
-    fromX: 0,
-    fromY: -450,
-    fromScale: 0.7,
-    rotate: -4,
-  },
+const DESKTOP_SLOTS: GridSlot[] = [
+  { from: "top-left" },
+  { from: "top" },
+  { from: "top-right" },
+  { from: "left" },
+  { from: "top" },
+  { from: "right" },
+  { from: "bottom-left" },
+  { from: "bottom" },
+  { from: "bottom-right" },
 ];
 
-const BACKGROUND_CARD_LAYOUTS: BackgroundCardLayout[] = [
-  {
-    top: "4%",
-    left: "4%",
-    rotate: -18,
-    scale: 0.9,
-  },
-  {
-    top: "9%",
-    left: "31%",
-    rotate: 6,
-    scale: 0.94,
-  },
-  {
-    top: "7%",
-    left: "67%",
-    rotate: 14,
-    scale: 0.89,
-  },
-  {
-    top: "30%",
-    left: "0%",
-    rotate: -9,
-    scale: 0.97,
-  },
-  {
-    top: "27%",
-    left: "61%",
-    rotate: 19,
-    scale: 0.92,
-  },
-  {
-    top: "50%",
-    left: "11%",
-    rotate: 11,
-    scale: 0.88,
-  },
-  {
-    top: "53%",
-    left: "42%",
-    rotate: -4,
-    scale: 0.95,
-  },
-  {
-    top: "47%",
-    left: "74%",
-    rotate: -15,
-    scale: 0.91,
-  },
-  {
-    top: "71%",
-    left: "23%",
-    rotate: 17,
-    scale: 0.9,
-  },
-  {
-    top: "69%",
-    left: "58%",
-    rotate: -7,
-    scale: 0.93,
-  },
-];
+const TABLET_SLOTS = DESKTOP_SLOTS.slice(0, 6);
+const MOBILE_SLOTS = DESKTOP_SLOTS.slice(0, 4);
 
-function getCardWindow(index: number, total: number) {
-  const segment = 1 / total;
-  const start = index * segment;
-  const end = start + segment * 0.9;
-  return { start, end };
+const MAX_REVIEW_CHARS = 180;
+
+function getOffset(from: EntryDirection) {
+  switch (from) {
+    case "top":
+      return { x: 0, y: -140 };
+    case "left":
+      return { x: -160, y: 0 };
+    case "right":
+      return { x: 160, y: 0 };
+    case "top-left":
+      return { x: -120, y: -120 };
+    case "top-right":
+      return { x: 120, y: -120 };
+    case "bottom-left":
+      return { x: -120, y: 120 };
+    case "bottom":
+      return { x: 0, y: 140 };
+    case "bottom-right":
+      return { x: 120, y: 120 };
+  }
 }
 
-function AnimatedReviewCard({
+function truncateText(text: string, maxChars: number) {
+  if (text.length <= maxChars) {
+    return text;
+  }
+
+  return `${text.slice(0, maxChars).trimEnd()}...`;
+}
+
+function AverageStars({ rating }: { rating: number }) {
+  const filled = Math.round(rating);
+
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className="h-4 w-4"
+          fill={i < filled ? "var(--color-highlight)" : "none"}
+          stroke={
+            i < filled
+              ? "var(--color-highlight)"
+              : "color-mix(in srgb, var(--color-highlight) 20%, white)"
+          }
+          strokeWidth={1.5}
+        />
+      ))}
+    </div>
+  );
+}
+
+function AnimatedGridCard({
   review,
   index,
-  total,
-  layout,
-  scrollYProgress,
+  from,
+  progress,
+  horizontalOnly = false,
+  horizontalDistance = 100,
+  featured = false,
 }: {
   review: ReviewCardData;
   index: number;
-  total: number;
-  layout: CardLayout;
-  scrollYProgress: any;
+  from: EntryDirection;
+  progress: MotionValue<number>;
+  horizontalOnly?: boolean;
+  horizontalDistance?: number;
+  featured?: boolean;
 }) {
-  const { start, end } = getCardWindow(index, total);
+  const desktopOffset = getOffset(from);
+  const sideOnlyOffset = {
+    x: index % 2 === 0 ? -horizontalDistance : horizontalDistance,
+    y: 0,
+  };
 
-  const x = useTransform(scrollYProgress, [start, end], [layout.fromX, 0], {
-    clamp: true,
-  });
+  const activeOffset = horizontalOnly ? sideOnlyOffset : desktopOffset;
 
-  const y = useTransform(scrollYProgress, [start, end], [layout.fromY, 0], {
-    clamp: true,
-  });
-
-  const scale = useTransform(
-    scrollYProgress,
-    [start, end],
-    [layout.fromScale, 1],
-    { clamp: true }
-  );
-
-  const rotate = useTransform(scrollYProgress, [start, end], [layout.rotate, 0], {
-    clamp: true,
-  });
-
-  const blur = useTransform(scrollYProgress, [start, end], [1.5, 0], {
-    clamp: true,
-  });
-
-  const opacity = useTransform(
-    scrollYProgress,
-    [start, start + (end - start) * 0.45],
-    [1, 0.5],
-    { clamp: true }
-  );
-
-  const filter = useTransform(blur, (value: number) => `blur(${value}px)`);
+  const x = useTransform(progress, [0, 1], [activeOffset.x, 0]);
+  const y = useTransform(progress, [0, 1], [activeOffset.y, 0]);
+  const opacity = useTransform(progress, [0, 0.2, 1], [0, 0.65, 1]);
+  const scale = useTransform(progress, [0, 1], [0.92, 1]);
 
   return (
     <motion.div
-      style={{
-        x,
-        y,
-        scale,
-        opacity,
-        rotate,
-        filter,
-        top: layout.top,
-        left: layout.left,
-      }}
-      className="absolute z-20 will-change-transform"
+      style={{ x, y, opacity, scale }}
+      className="relative z-0 flex w-full justify-center will-change-transform"
     >
-      <ReviewCard data={review} />
+      <ReviewCard data={review} featured={featured} />
     </motion.div>
   );
 }
 
 export function ReviewReveal({ reviews }: ReviewRevealProps) {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const totalReviews = reviews.length;
+
+  const homepageReviews = useMemo(
+    () =>
+      reviews
+        .filter((review) => review.showOnHomepage)
+        .map((review) => ({
+          ...review,
+          context: truncateText(review.context, MAX_REVIEW_CHARS),
+        })),
+    [reviews]
+  );
+
+  const homepageReviewCount = homepageReviews.length;
+
+  const avgRating = useMemo(() => {
+    if (homepageReviewCount === 0) return 0;
+
+    return (
+      homepageReviews.reduce((sum, review) => sum + review.rating, 0) /
+      homepageReviewCount
+    );
+  }, [homepageReviews, homepageReviewCount]);
+
+  const mobileReviews = homepageReviews.slice(0, MOBILE_SLOTS.length);
+  const tabletReviews = homepageReviews.slice(0, TABLET_SLOTS.length);
+  const desktopReviews = homepageReviews.slice(0, DESKTOP_SLOTS.length);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end end"],
+    offset: ["start 92%", "end 78%"],
   });
 
-  const activeReviews = useMemo(() => reviews.slice(0, 5), [reviews]);
+  const mobileProgress = useTransform(scrollYProgress, [0, 0.38], [0, 1], {
+    clamp: true,
+  });
 
-  const backgroundReviews = useMemo(() => {
-    const base = reviews.slice(0, 5);
-    return [...base, ...base].slice(0, 10);
-  }, [reviews]);
+  const tabletProgress = useTransform(scrollYProgress, [0, 0.43], [0, 1], {
+    clamp: true,
+  });
+
+  const desktopProgress = useTransform(scrollYProgress, [0, 0.55], [0, 1], {
+    clamp: true,
+  });
+
+  if (!homepageReviews.length) {
+    return null;
+  }
 
   return (
-    <section ref={sectionRef} className="relative h-[350vh] w-full">
-      <div className="sticky top-0 h-screen overflow-x-hidden overflow-y-visible bg-white">
-        <div className="relative mx-auto h-screen w-screen max-w-7xl overflow-clip px-6 lg:px-8">
-          {backgroundReviews.map((review, index) => {
-            const layout = BACKGROUND_CARD_LAYOUTS[index];
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden py-24 sm:bg-white lg:py-28"
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 15% 50%, color-mix(in srgb, var(--color-primary) 5%, transparent), transparent 55%),
+            radial-gradient(ellipse at 85% 50%, color-mix(in srgb, var(--color-secondary) 4%, transparent), transparent 50%)
+          `,
+        }}
+      />
 
-            return (
-              <div
-                key={`bg-${review.tag}-${index}`}
-                className="absolute z-10 pointer-events-none"
-                style={{
-                  top: layout.top,
-                  left: layout.left,
-                  transform: `rotate(${layout.rotate}deg) scale(${layout.scale})`,
-                  opacity: 0.14,
-                  filter: "blur(1.5px)",
-                }}
-              >
-                <ReviewCard data={review} />
-              </div>
-            );
-          })}
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="relative z-20 mb-14 text-center lg:mb-16">
+          <p
+            className="mb-2 text-xs font-semibold uppercase tracking-[0.3em]"
+            style={{ color: "var(--color-secondary)" }}
+          >
+            Testimonials
+          </p>
 
-          {activeReviews.map((review, index) => (
-            <AnimatedReviewCard
-              key={`active-${review.tag}-${index}`}
-              review={review}
-              index={index}
-              total={activeReviews.length}
-              layout={ACTIVE_CARD_LAYOUTS[index % ACTIVE_CARD_LAYOUTS.length]}
-              scrollYProgress={scrollYProgress}
-            />
+          <h2
+            className="text-3xl font-bold tracking-tight sm:text-4xl"
+            style={{ color: "var(--color-primary)" }}
+          >
+            Trusted by homeowners who want it done right
+          </h2>
+
+          <div
+            className="mt-3 inline-flex items-center gap-2.5 rounded-full border px-3.5 py-1.5"
+            style={{
+              borderColor:
+                "color-mix(in srgb, var(--color-primary) 12%, transparent)",
+            }}
+          >
+            <AverageStars rating={avgRating} />
+            <span
+              className="text-sm font-semibold tabular-nums"
+              style={{ color: "var(--color-primary)" }}
+            >
+              {avgRating.toFixed(1)}
+            </span>
+            <span className="text-xs text-neutral-400">
+              · {totalReviews}+ reviews
+            </span>
+          </div>
+        </div>
+
+        <div className="relative z-0 grid grid-cols-1 justify-items-center gap-5 md:hidden">
+          {mobileReviews.map((review, index) => (
+            <div key={review.id} className="flex w-full justify-center">
+              <AnimatedGridCard
+                review={review}
+                index={index}
+                from={MOBILE_SLOTS[index].from}
+                progress={mobileProgress}
+                horizontalOnly={true}
+                horizontalDistance={90}
+                featured={index === 0}
+              />
+            </div>
           ))}
+        </div>
+
+        <div className="relative z-0 hidden grid-cols-2 justify-items-center gap-5 md:grid lg:hidden">
+          {tabletReviews.map((review, index) => (
+            <div key={review.id} className="flex w-full justify-center">
+              <AnimatedGridCard
+                review={review}
+                index={index}
+                from={TABLET_SLOTS[index].from}
+                progress={tabletProgress}
+                horizontalOnly={true}
+                horizontalDistance={110}
+                featured={index === 0}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="relative z-0 hidden grid-cols-3 justify-items-center gap-5 lg:grid">
+          {desktopReviews.map((review, index) => (
+            <div key={review.id} className="flex w-full justify-center">
+              <AnimatedGridCard
+                review={review}
+                index={index}
+                from={DESKTOP_SLOTS[index].from}
+                progress={desktopProgress}
+                featured={index === 0}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="relative z-20 mt-10 text-center">
+          <a
+            href="/reviews"
+            className="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:opacity-80"
+            style={{
+              borderColor:
+                "color-mix(in srgb, var(--color-primary) 22%, transparent)",
+              color: "var(--color-primary)",
+            }}
+          >
+            Read all reviews
+            <svg
+              className="h-3.5 w-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
         </div>
       </div>
     </section>

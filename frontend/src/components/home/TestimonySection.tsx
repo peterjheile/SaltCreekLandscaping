@@ -1,8 +1,10 @@
 import { ReviewReveal } from "@/components/ui/review-reveal";
-import { getReviewCards } from "@/features/marketing/api";
+import { getReviewCards } from "@/features/marketing/reviews/api";
+
+
 
 export default async function TestimonySection() {
-  const reviews = await getReviewCards();
+  const allReviews = await getReviewCards();
 
-  return <ReviewReveal reviews={reviews} />;
+  return <ReviewReveal reviews={allReviews} />;
 }

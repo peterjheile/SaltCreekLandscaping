@@ -1,64 +1,93 @@
 "use client";
 
-import { motion } from "motion/react";
+import { Star } from "lucide-react";
+import type { ReviewCardData } from "@/features/marketing/reviews/types";
 
-type ReviewCardData = {
-  name: string;
-  image: string;
-  context: string;
-  rating: number; // 1–5
+type ReviewCardProps = {
+  data: ReviewCardData;
+  featured?: boolean;
 };
 
-function Star({ filled }: { filled: boolean }) {
+function Stars({ rating }: { rating: ReviewCardData["rating"] }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className={`h-4 w-4 ${
-        filled ? "text-yellow-500" : "text-gray-300"
-      }`}
-      fill="currentColor"
-    >
-      <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" />
-    </svg>
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, index) => {
+        const filled = index < rating;
+
+        return (
+          <Star
+            key={index}
+            className={
+              filled
+                ? "h-4 w-4 fill-highlight text-highlight"
+                : "h-4 w-4 text-primary/20"
+            }
+          />
+        );
+      })}
+    </div>
   );
 }
 
-export function ReviewCard({ data }: { data: ReviewCardData }) {
+export function ReviewCard({ data, featured = false }: ReviewCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 260, damping: 18 }}
-      className="group w-full max-w-sm rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-xl"
+    <article
+      className={[
+        "group relative overflow-hidden rounded-[1.75rem] border border-white/20 bg-white/75 backdrop-blur-xl",
+        "shadow-[0_20px_60px_color-mix(in_srgb,var(--color-primary)_12%,transparent)]",
+        "transition-transform duration-300",
+        featured
+          ? "w-[280px] p-6 sm:w-[360px]"
+          : "w-[240px] p-5 sm:w-[300px]",
+      ].join(" ")}
     >
-      {/* Top section */}
-      <div className="flex items-center gap-4">
-        <img
-          src={data.image}
-          alt={data.name}
-          className="h-14 w-14 rounded-full object-cover ring-2 ring-gray-100"
-        />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0.62))]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-white/60" />
+      <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-highlight/10 blur-2xl" />
 
-        <div className="flex flex-col">
-          <p className="text-base font-semibold text-gray-900">
-            {data.name}
-          </p>
+      <div className="relative">
+        <div className="mb-5 flex items-center gap-3">
+          <div
+            className={[
+              "relative shrink-0 overflow-hidden rounded-full border border-primary/10 bg-primary/5",
+              featured ? "h-14 w-14" : "h-12 w-12",
+            ].join(" ")}
+          >
+            {data.image ? (
+              <img
+                src={data.image}
+                alt={data.name}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            ) : null}
+          </div>
 
-          {/* Stars */}
-          <div className="mt-1 flex">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star key={i} filled={i <= data.rating} />
-            ))}
+          <div className="min-w-0">
+            <h3
+              className={[
+                "truncate font-semibold text-primary",
+                featured ? "text-[1.05rem]" : "text-base",
+              ].join(" ")}
+            >
+              {data.name}
+            </h3>
+
+            <div className="mt-1">
+              <Stars rating={data.rating} />
+            </div>
           </div>
         </div>
+
+        <p
+          className={[
+            "text-left leading-7 text-text/80",
+            featured ? "text-[0.98rem]" : "text-sm",
+          ].join(" ")}
+        >
+          “{data.context}”
+        </p>
       </div>
-
-      {/* Divider */}
-      <div className="my-4 h-px w-full bg-gray-100" />
-
-      {/* Review text */}
-      <p className="text-sm leading-relaxed text-gray-600">
-        “{data.context}”
-      </p>
-    </motion.div>
+    </article>
   );
 }

@@ -1,18 +1,21 @@
-import HeroSectionWithParallax from "@/components/ui/hero-parallax"
-import { fetchParallaxCards, getHeroContent } from "@/features/marketing/api"
 import HeroHeader from "@/components/ui/hero-header"
-import BackgroundGradient from "@/components/ui/background-gradient";
+
+import {getHomePageHeroContent} from "@/features/marketing/home/api"
+
+
+
 
 export default async function HeroSection() {
-  const products = await fetchParallaxCards();
-  const heroContent = await getHeroContent();
+
+  const HomepageHeroContent = await getHomePageHeroContent();
+
 
   return (
     <div className = "relative">
 
-    <BackgroundGradient/>
 
-    <HeroSectionWithParallax products={products}/>
+    <HeroHeader heroContent={HomepageHeroContent}/>
+
     
     </div>
   );

@@ -1,12 +1,6 @@
 from django.urls import path
-from .views import (
-    SiteSettingsDetailView,
-    HomePageDetailView,
-    AboutSectionListView,
-)
+from .views import SiteSettingsView
 
 urlpatterns = [
-    path("site-settings/", SiteSettingsDetailView.as_view(), name="site-settings-detail"),
-    path("homepage/", HomePageDetailView.as_view(), name="homepage-detail"),
-    path("about-sections/", AboutSectionListView.as_view(), name="about-section-list"),
+    path("site-settings/", SiteSettingsView.as_view(), name="site-settings"),
 ]

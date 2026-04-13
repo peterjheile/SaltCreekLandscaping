@@ -4,10 +4,18 @@ import type { HeroCard, ParallaxCard } from "./types";
 import { prepareParallaxCards } from "./utils";
 import type { FeatureCard, FeatureSectionCard } from "./types";
 import { prepareStickyScrollContent } from "./utils";
-import type { ReviewCardData, ReviewCardApi, HeroContentApi, HeroContentData, } from "./types";
-import { normalizeReviewCards, normalizeHeroContent } from "./utils";
+import type { HeroContentApi, HeroContentData, } from "./types";
+import {normalizeHeroContent } from "./utils";
 
 
+
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    throw new Error(`API request failed with status ${response.status}`);
+  }
+
+  return response.json() as Promise<T>;
+}
 
 
 const API_BASE =
@@ -80,31 +88,7 @@ export async function fetchFeatureCards() {
 
 
 
-const REVIEW_CARDS_ENDPOINT = `${API_BASE_URL}/api/marketing/review-cards/`;
 
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
-
-export async function getReviewCards(): Promise<ReviewCardData[]> {
-  const response = await fetch(REVIEW_CARDS_ENDPOINT, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
-
-  const data = await handleResponse<ReviewCardApi[]>(response);
-
-  const data2 = normalizeReviewCards(data);
-  console.log("Fetched review cards:", data);
-  return data2;
-}
 
 
 
@@ -125,3 +109,11 @@ export async function getHeroContent(): Promise<HeroContentData> {
   const data = await handleResponse<HeroContentApi>(response);
   return normalizeHeroContent(data);
 }
+
+
+
+
+
+
+
+

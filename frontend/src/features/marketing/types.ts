@@ -46,23 +46,6 @@ export type FeatureSectionCard = {
 
 
 
-export type ReviewCardApi = {
-  id: string | number;
-  name: string;
-  tag: string;
-  review: string;
-  image: string | null;
-};
-
-export type ReviewCardData = {
-  name: string;
-  tag: string;
-  image: string;
-  context: string;
-};
-
-
-
 
 
 
@@ -77,3 +60,17 @@ export type HeroContentData = {
   title: string;
   subtitle: string;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+

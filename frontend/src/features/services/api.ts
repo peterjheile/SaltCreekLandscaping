@@ -7,7 +7,7 @@ import {
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 
-const SERVICES_ENDPOINT = `${API_BASE_URL}/api/services/categories/`;
+const SERVICES_ENDPOINT = `${API_BASE_URL}/api/marketing/services/`;
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {

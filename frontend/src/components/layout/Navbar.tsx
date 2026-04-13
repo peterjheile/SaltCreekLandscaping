@@ -5,7 +5,6 @@ import {
   NavBody,
   NavItems,
   MobileNav,
-  NavbarLogo,
   NavbarButton,
   MobileNavHeader,
   MobileNavToggle,
@@ -14,37 +13,39 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
-import logo from "@/public/salt-creek-logo.png";
+type NavbarDemoProps = {
+  businessName: string;
+  logoUrl: string | null;
+};
 
-export default function NavbarDemo() {
+export default function NavbarDemo({
+  businessName,
+  logoUrl,
+}: NavbarDemoProps) {
   const navItems = [
-    {
-      name: "Home",
-      link: "/",
-    },
-    {
-      name: "Services",
-      link: "/services",
-    },
-    {
-      name: "Gallery",
-      link: "/gallery",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
-    },
-    {
-      name: "FAQs",
-      link: "#faqs",
-    },
-    {
-      name: "Reviews",
-      link: "/reviews",
-    },
+    { name: "Home", link: "/" },
+    { name: "Services", link: "/services" },
+    { name: "Gallery", link: "/gallery" },
+    { name: "Contact", link: "/contact" },
+    { name: "FAQs", link: "/faqs" },
+    { name: "Reviews", link: "/reviews" },
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const buttonStyles =
+    "shadow-[0_2px_8px_rgba(0,0,0,0.06),0_6px_18px_rgba(0,0,0,0.08)] ring-1 ring-black/5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(0,0,0,0.10),0_10px_26px_rgba(0,0,0,0.12)]";
+
+  const logoSrc = logoUrl || "/salt-creek-logo.png";
+  const logoAlt = businessName ? `${businessName} logo` : "Logo";
+
+  const Logo = () => (
+    <img
+      src={logoSrc}
+      alt={logoAlt}
+      className="h-10 w-auto object-contain"
+    />
+  );
 
   return (
     <>
@@ -55,22 +56,25 @@ export default function NavbarDemo() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed inset-0 z-30 bg-black/30 backdrop-blur-xl lg:hidden"/>
+            className="fixed inset-0 z-30 bg-black/30 backdrop-blur-xl lg:hidden"
+          />
         )}
       </AnimatePresence>
 
-      <Navbar className = "font-montserrat">
+      <Navbar>
         <NavBody>
-          <NavbarLogo src={logo} alt="Logo" />
+          <Logo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="primary">Book a call</NavbarButton>
+            <NavbarButton variant="primary" className={buttonStyles}>
+              Book Service
+            </NavbarButton>
           </div>
         </NavBody>
 
         <MobileNav>
           <MobileNavHeader>
-            <NavbarLogo src={logo} alt="Logo" />
+            <Logo />
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -83,7 +87,7 @@ export default function NavbarDemo() {
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
+                className="relative text-text/70"
               >
                 <span className="block">{item.name}</span>
               </a>
@@ -93,7 +97,7 @@ export default function NavbarDemo() {
               <NavbarButton
                 onClick={() => setIsMobileMenuOpen(false)}
                 variant="primary"
-                className="w-full"
+                className={`w-full ${buttonStyles}`}
               >
                 Book a Service
               </NavbarButton>

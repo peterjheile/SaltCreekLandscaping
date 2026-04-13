@@ -1,12 +1,10 @@
-import { StickyScroll } from "@/components/ui/sticky-scroll-reveal"
-import { fetchFeatureCards } from "@/features/marketing/api"
+import { StickyScroll } from "@/components/ui/sticky-scroll"
 
-export default async function AboutSection (){
+import {getAboutModules} from "@/features/marketing/home/api"
 
-  const stickyScrollContent = await fetchFeatureCards();
+export default async function AboutSection() {
 
+  const aboutContentModules = await getAboutModules();
 
-    return (
-      <StickyScroll content = {stickyScrollContent}/>
-    )
+  return <StickyScroll content={aboutContentModules} />;
 }

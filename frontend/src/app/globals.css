@@ -13,6 +13,14 @@
 
 
 
+  /* Color Configuration for the website */
+  --color-primary: #013220;
+  --color-secondary: #ada18c;
+  --color-highlight: #c49c48;
+  --color-text: #000000;
+  --color-text-inverse: #ffffff;
+
+
 
   /* Configure your theme variables here */
   --font-display: "Inter", "sans-serif";
@@ -42,9 +50,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
+
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
+
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -61,6 +69,11 @@
 }
 
 :root {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-highlight: var(--color-highlight);
+  --color-text: var(--color-text);
+  --color-text-inverse: var(--color-text-inverse);
 
 
   --background: oklch(1 0 0);

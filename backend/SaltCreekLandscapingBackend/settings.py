@@ -57,7 +57,6 @@ INSTALLED_APPS = [
 
     #custom apps
     "core",
-    "services",
     "marketing",
 ]
 

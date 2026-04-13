@@ -1,8 +1,8 @@
 // src/features/marketing/utils.ts
 
 import type { HeroCard, ParallaxCard, FeatureCard, FeatureSectionCard } from "./types";
-import type { ReviewCardApi, ReviewCardData } from "./types";
 import type { HeroContentApi, HeroContentData } from "./types";
+
 
 
 const MAX_HERO_CARDS = 15;
@@ -122,42 +122,6 @@ export function prepareStickyScrollContent(cards: FeatureCard[]) {
 
 
 
-const FALLBACK_REVIEW_IMAGE = "/images/reviews/default-profile.jpg";
-
-function mapReviewCard(apiCard: ReviewCardApi): ReviewCardData {
-  return {
-    name: apiCard.name,
-    tag: apiCard.tag?.trim() || "Customer",
-    image: apiCard.image || FALLBACK_REVIEW_IMAGE,
-    context: apiCard.review,
-  };
-}
-
-export function normalizeReviewCards(apiCards: ReviewCardApi[]): ReviewCardData[] {
-  const mappedCards = apiCards.map(mapReviewCard).slice(0, 5);
-
-  if (mappedCards.length === 0) {
-    return [];
-  }
-
-  if (mappedCards.length === 5) {
-    return mappedCards;
-  }
-
-  const normalizedCards: ReviewCardData[] = [...mappedCards];
-  let duplicateIndex = 0;
-
-  while (normalizedCards.length < 5) {
-    normalizedCards.push(mappedCards[duplicateIndex % mappedCards.length]);
-    duplicateIndex += 1;
-  }
-
-  return normalizedCards;
-}
-
-
-
-
 
 
 
@@ -171,3 +135,13 @@ export function normalizeHeroContent(
     subtitle: apiContent.subtitle,
   };
 }
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,18 @@
+from .faqs.admin import *
+from .contact.admin import *
+from .services.admin import *
+from .gallery.admin import *
+from .home.admin import *
+from .reviews.admin import *
+
+
+
+
 from django.contrib import admin, messages
 from .models import HeroCard, FeatureCard, ReviewCard, HeroContent
 from django.db.models import Max
 from django.utils.html import format_html
+from .models import ReviewsPageContent
 
 
 @admin.register(HeroCard)
@@ -61,59 +72,12 @@ class FeatureCardAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(ReviewCard)
-class ReviewCardAdmin(admin.ModelAdmin):
-    list_display = (
-        "image_preview",
-        "name",
-        "tag",
-        "short_review",
-        "sort_order",
-        "is_active",
-        "created_at",
-    )
-    list_editable = ("sort_order", "is_active")
-    list_filter = ("is_active", "created_at")
-    search_fields = ("name", "tag", "review")
-    ordering = ("sort_order", "id")
-    readonly_fields = ("image_preview_large", "created_at")
-    fields = (
-        "name",
-        "tag",
-        "review",
-        "image",
-        "image_preview_large",
-        "sort_order",
-        "is_active",
-        "created_at",
-    )
+from django.contrib import admin
+from django.utils.html import format_html
 
-    def image_preview(self, obj):
-        if obj.image:
-            return format_html(
-                '<img src="{}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 9999px;" />',
-                obj.image.url,
-            )
-        return "—"
 
-    image_preview.short_description = "Image"
 
-    def image_preview_large(self, obj):
-        if obj.pk and obj.image:
-            return format_html(
-                '<img src="{}" style="max-width: 120px; max-height: 120px; object-fit: cover; border-radius: 12px; border: 1px solid #ddd;" />',
-                obj.image.url,
-            )
-        return "No image uploaded."
 
-    image_preview_large.short_description = "Current image preview"
-
-    def short_review(self, obj):
-        if len(obj.review) <= 80:
-            return obj.review
-        return f"{obj.review[:80]}..."
-
-    short_review.short_description = "Review"
 
 
 
@@ -129,3 +93,72 @@ class HeroContentAdmin(admin.ModelAdmin):
     ordering = ("-is_active", "-created_at")
     readonly_fields = ("created_at",)
     fields = ("title", "subtitle", "is_active", "created_at")
+
+
+
+
+
+
+
+
+
+#Everything to do with FAQs
+
+
+
+
+
+
+########## SERVICES HERO (Marketing) ##########
+@admin.register(ReviewsPageContent)
+class ReviewsPageContentAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "title",
+        "is_active",
+        "sort_order",
+        "hero_image_preview",
+        "updated_at",
+    )
+    list_filter = ("is_active", "created_at", "updated_at")
+    search_fields = ("name", "slug", "title", "eyebrow", "subtitle")
+    ordering = ("sort_order", "name")
+    prepopulated_fields = {"slug": ("name",)}
+    readonly_fields = ("hero_image_preview", "created_at", "updated_at")
+
+    fieldsets = (
+        (
+            "Admin Info",
+            {
+                "fields": ("name", "slug", "is_active", "sort_order"),
+            },
+        ),
+        (
+            "Hero Content",
+            {
+                "fields": (
+                    "eyebrow",
+                    "title",
+                    "subtitle",
+                    "hero_image",
+                    "hero_image_preview",
+                ),
+            },
+        ),
+        (
+            "Timestamps",
+            {
+                "fields": ("created_at", "updated_at"),
+            },
+        ),
+    )
+
+    def hero_image_preview(self, obj):
+        if obj.hero_image:
+            return format_html(
+                '<img src="{}" style="max-height: 120px; border-radius: 8px;" />',
+                obj.hero_image.url,
+            )
+        return "No image"
+
+    hero_image_preview.short_description = "Hero Image Preview"

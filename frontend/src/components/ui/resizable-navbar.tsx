@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, type ElementType, type ReactNode } from "react";
 import Image from "next/image";
-import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   AnimatePresence,
   motion,
@@ -103,8 +102,8 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => (
     transition={SPRING}
     style={{ minWidth: "800px" }}
     className={cn(
-      "relative z-[60] mx-auto hidden h-16 w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-      visible && "bg-white dark:bg-neutral-950",
+      "relative z-[60] mx-auto hidden h-16 w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+      visible && "bg-text-inverse",
       className,
     )}
   >
@@ -119,7 +118,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
     <motion.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "hidden flex-1 flex-row items-center justify-center gap-1 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex",
+        "hidden flex-1 flex-row items-center justify-center gap-1 text-sm font-medium text-text/70 transition duration-200 hover:text-text lg:flex",
         className,
       )}
     >
@@ -129,15 +128,15 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           href={item.link}
           onClick={onItemClick}
           onMouseEnter={() => setHovered(idx)}
-          className="relative inline-flex items-center rounded-full px-4 py-2 text-neutral-600 dark:text-neutral-300"
+          className="relative inline-flex items-center rounded-full px-4 py-2 text-text/70"
         >
           {hovered === idx && (
             <motion.div
               layoutId="hovered"
-              className="absolute inset-0 h-full w-full bg-gray-100 rounded-full dark:bg-neutral-800"
+              className="absolute inset-0 h-full w-full rounded-full bg-primary/8"
             />
           )}
-          <span className="relative z-20 font-montserrat">{item.name}</span>
+          <span className="relative z-20">{item.name}</span>
         </a>
       ))}
     </motion.div>
@@ -158,9 +157,7 @@ export const MobileNav = ({
     transition={SPRING}
     className={cn(
       "relative z-50 mx-auto flex w-full max-w-[calc(100vw)] flex-col items-center justify-between overflow-visible px-2 py-2 lg:hidden",
-      visible
-        ? "bg-white dark:bg-neutral-950/72"
-        : "bg-white dark:bg-neutral-950/88",
+      "bg-text-inverse",
       className,
     )}
   >
@@ -174,7 +171,7 @@ export const MobileNavHeader = ({
 }: MobileNavHeaderProps) => (
   <div
     className={cn(
-      "relative z-[70] flex w-full flex-row items-center justify-between",
+      "relative z-[70] flex w-full flex-row items-center justify-between text-text",
       className,
     )}
   >
@@ -203,7 +200,7 @@ export const MobileNavMenu = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed mt-20 inset-0 z-40 backdrop-blur-2xl dark:bg-black/25"
+            className="fixed inset-0 z-40 mt-20 backdrop-blur-2xl"
           />
 
           <motion.div
@@ -227,7 +224,7 @@ export const MobileNavMenu = ({
               ease: [0.22, 1, 0.36, 1],
             }}
             className={cn(
-              "absolute left-0 right-0 top-full z-[60] overflow-hidden bg-white shadow-[0_24px_80px_rgba(15,23,42,0.10)] backdrop-blur-xl dark:border-white/10 dark:bg-neutral-950/90",
+              "absolute left-0 right-0 top-full z-[60] overflow-hidden bg-text-inverse shadow-[0_24px_80px_rgba(15,23,42,0.10)] backdrop-blur-xl",
               className,
             )}
           >
@@ -283,14 +280,16 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return (
-    <Hamburger
-      toggled={isOpen}
-      toggle={onClick}
-      direction="left"
-      size={20}
-      color="currentColor"
-      rounded
-    />
+    <div className="text-text">
+      <Hamburger
+        toggled={isOpen}
+        toggle={onClick}
+        direction="left"
+        size={20}
+        color="currentColor"
+        rounded
+      />
+    </div>
   );
 };
 
@@ -307,16 +306,19 @@ export const NavbarLogo = ({
 }: NavbarLogoProps) => (
   <a href="/" className="flex items-center gap-2 px-2 py-1">
     {src && (
-      <Image
-        src={src}
-        alt={alt}
-        className="h-10 w-auto object-contain"
-        priority
-      />
+      <div className="relative h-10 w-[120px]">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-contain"
+          priority
+        />
+      </div>
     )}
 
     {text && (
-      <span className="hidden text-sm font-semibold tracking-wide sm:block">
+      <span className="hidden text-sm font-semibold tracking-wide text-text sm:block">
         {text}
       </span>
     )}
@@ -342,14 +344,14 @@ export const NavbarButton = <T extends ElementType = "a">({
   const Tag = as || "a";
 
   const baseStyles =
-    "button relative inline-block cursor-pointer rounded-md bg-white/16 px-4 py-2 text-center text-sm font-bold text-black transition duration-200 hover:-translate-y-0.5";
+    "button relative inline-block cursor-pointer rounded-md px-4 py-2 text-center text-sm font-bold transition duration-200 hover:-translate-y-0.5";
 
   const variantStyles = {
-    primary: `shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
-    secondary: "bg-transparent shadow-none dark:text-white",
-    dark: `bg-black text-white shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
+    primary: `bg-text-inverse text-text shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
+    secondary: "bg-transparent text-text shadow-none",
+    dark: `bg-text text-text-inverse shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
     gradient:
-      "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
+      "bg-primary text-text-inverse shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
   };
 
   return (

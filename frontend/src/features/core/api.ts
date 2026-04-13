@@ -8,7 +8,7 @@ const SITE_SETTINGS_ENDPOINT = `${API_BASE_URL}/api/core/site-settings/`;
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
     const res = await fetch(SITE_SETTINGS_ENDPOINT, {
-      next: { revalidate: 60 }, // ISR
+      next: { revalidate: 0 }, // ISR
     });
 
     if (!res.ok) {

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import hero_cards, feature_cards, HomepageReviewCardListView, ReviewCardListView, HeroContentView, FAQCategoryListView
+from .views import HomepageReviewCardListView, ReviewCardListView, FAQCategoryListView
 from .views import ActiveReviewsPageContentView, ActiveFAQPageContentView, ActiveContactPageContentView, ActiveServicePageContentView, ActiveGalleryPageContentView
 from .views import ServiceCategoryListView
 from .views import GalleryPhotoListView, HomepageGalleryPhotoListView
@@ -7,13 +7,6 @@ from .views import ActiveHomePageHeroContentView
 from .views import AboutModuleListView
 
 urlpatterns = [
-    path("hero-cards/", hero_cards, name="hero-cards"),
-    path("feature-cards/", feature_cards),
-    path("hero-content/", HeroContentView.as_view(), name="hero-content"),
-    path("faqs/", FAQCategoryListView.as_view(), name="faq-list"),
-    path("services/", ServiceCategoryListView.as_view(), name="service-list"),
-
-
     
     path("faq-page-content/",ActiveFAQPageContentView.as_view(),name="faq-page-content-active",),
     path("contact-page-content/",ActiveContactPageContentView.as_view(),name="contact-page-content-active",),
@@ -24,6 +17,12 @@ urlpatterns = [
 
     path("gallery/", GalleryPhotoListView.as_view(), name="gallery-photo-list"),
     path("gallery/homepage/", HomepageGalleryPhotoListView.as_view(), name="homepage-gallery-photo-list"),
+
+
+    path("faqs/", FAQCategoryListView.as_view(), name="faq-list"),
+
+
+    path("services/", ServiceCategoryListView.as_view(), name="service-list"),
 
 
     path("reviews/", ReviewCardListView.as_view(), name="review-card-list"),

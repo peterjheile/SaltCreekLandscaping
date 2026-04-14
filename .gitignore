@@ -1,11 +1,11 @@
+#################################
 ###### Environment Secrets ######
+#################################
 .env
 .env.*
 *.env
 
-#Allow an example env file
 !env.example
-
 
 
 

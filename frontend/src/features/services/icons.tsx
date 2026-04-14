@@ -21,53 +21,53 @@ import {
 } from "react-icons/fi";
 
 export const SERVICE_ICON_NAMES = [
-  "FiScissors",
-  "FiWind",
-  "FiDroplet",
-  "FiLayers",
-  "FiHome",
-  "FiTrash2",
-  "FiTool",
-  "FiSun",
-  "FiCloud",
-  "FiCloudRain",
-  "FiActivity",
-  "FiCheckCircle",
-  "FiAward",
-  "FiThumbsUp",
-  "FiStar",
-  "FiMapPin",
-  "FiNavigation",
-  "FiSettings",
+  "scissors",
+  "wind",
+  "droplet",
+  "layers",
+  "home",
+  "trash",
+  "tool",
+  "sun",
+  "cloud",
+  "rain",
+  "activity",
+  "check",
+  "award",
+  "thumbs",
+  "star",
+  "location",
+  "navigation",
+  "settings",
 ] as const;
 
 export type ServiceIconName = (typeof SERVICE_ICON_NAMES)[number];
 
-const SERVICE_ICON_MAP = {
-  FiScissors,
-  FiWind,
-  FiDroplet,
-  FiLayers,
-  FiHome,
-  FiTrash2,
-  FiTool,
-  FiSun,
-  FiCloud,
-  FiCloudRain,
-  FiActivity,
-  FiCheckCircle,
-  FiAward,
-  FiThumbsUp,
-  FiStar,
-  FiMapPin,
-  FiNavigation,
-  FiSettings,
+export const SERVICE_ICON_MAP = {
+  scissors: FiScissors,
+  wind: FiWind,
+  droplet: FiDroplet,
+  layers: FiLayers,
+  home: FiHome,
+  trash: FiTrash2,
+  tool: FiTool,
+  sun: FiSun,
+  cloud: FiCloud,
+  rain: FiCloudRain,
+  activity: FiActivity,
+  check: FiCheckCircle,
+  award: FiAward,
+  thumbs: FiThumbsUp,
+  star: FiStar,
+  location: FiMapPin,
+  navigation: FiNavigation,
+  settings: FiSettings,
 } as const;
 
 const FALLBACK_ICON = FiScissors;
 
 export function isServiceIconName(value: string): value is ServiceIconName {
-  return value in SERVICE_ICON_MAP;
+  return (SERVICE_ICON_NAMES as readonly string[]).includes(value);
 }
 
 export function normalizeServiceIconName(

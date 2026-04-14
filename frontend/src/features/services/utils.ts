@@ -1,3 +1,6 @@
+import {
+  SERVICE_ICON_NAMES,
+} from "./icons";
 import type {
   ServiceCategory,
   ServiceCategoryAccordionItem,
@@ -33,14 +36,7 @@ export type ApiServiceCategory = {
 ========================= */
 
 export function isServiceIconKey(value: string): value is ServiceIconKey {
-  return [
-    "scissors",
-    "wind",
-    "layers",
-    "home",
-    "droplet",
-    "sun",
-  ].includes(value);
+  return (SERVICE_ICON_NAMES as readonly string[]).includes(value);
 }
 
 export function normalizeServiceIconName(

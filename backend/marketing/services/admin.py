@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import ServicePageContent
+from .models import (
+    ServicePageContent,
+    ServiceCategory,
+    ServiceIncludedItem,
+    ServiceCategoryIncludedItem,
+)
 
 
 @admin.register(ServicePageContent)
@@ -54,21 +59,8 @@ class ServicePageContentAdmin(admin.ModelAdmin):
                 obj.hero_image.url,
             )
         return "No image"
-    
+
     hero_image_preview.short_description = "Hero Image Preview"
-
-
-
-
-
-
-
-
-from .models import (
-    ServiceCategory,
-    ServiceIncludedItem,
-    ServiceCategoryIncludedItem,
-)
 
 
 class ServiceCategoryIncludedItemInline(admin.TabularInline):
@@ -130,6 +122,31 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields["icon_name"].help_text = """
+            Available icons:<br><br>
+            • <strong>scissors</strong> – Cutting / trimming<br>
+            • <strong>wind</strong> – Blowing / cleanup<br>
+            • <strong>droplet</strong> – Irrigation / water<br>
+            • <strong>layers</strong> – Mulch / layering<br>
+            • <strong>home</strong> – Residential<br>
+            • <strong>trash</strong> – Junk / debris removal<br>
+            • <strong>tool</strong> – General service<br>
+            • <strong>sun</strong> – Outdoor / summer<br>
+            • <strong>cloud</strong> – General weather<br>
+            • <strong>rain</strong> – Rain / drainage<br>
+            • <strong>activity</strong> – Maintenance<br>
+            • <strong>check</strong> – Completed / verified<br>
+            • <strong>award</strong> – Premium service<br>
+            • <strong>thumbs</strong> – Recommended<br>
+            • <strong>star</strong> – Featured<br>
+            • <strong>location</strong> – Location-based<br>
+            • <strong>navigation</strong> – Service area<br>
+            • <strong>settings</strong> – Custom work
+        """
+        return form
 
 
 @admin.register(ServiceIncludedItem)

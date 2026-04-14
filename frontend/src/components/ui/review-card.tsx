@@ -29,7 +29,22 @@ function Stars({ rating }: { rating: ReviewCardData["rating"] }) {
   );
 }
 
+// Format date as MM/DD/YY
+function formatDate(date: string | null) {
+  if (!date) return null;
+
+  const d = new Date(date);
+
+  return d.toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  });
+}
+
 export function ReviewCard({ data, featured = false }: ReviewCardProps) {
+  const formattedDate = formatDate(data.reviewDate);
+
   return (
     <article
       className={[
@@ -64,14 +79,23 @@ export function ReviewCard({ data, featured = false }: ReviewCardProps) {
           </div>
 
           <div className="min-w-0">
-            <h3
-              className={[
-                "truncate font-semibold text-primary",
-                featured ? "text-[1.05rem]" : "text-base",
-              ].join(" ")}
-            >
-              {data.name}
-            </h3>
+            {/* Name + Date inline (fixed alignment) */}
+            <div className="flex items-center gap-2">
+              <h3
+                className={[
+                  "truncate font-semibold text-primary leading-tight",
+                  featured ? "text-[1.05rem]" : "text-base",
+                ].join(" ")}
+              >
+                {data.name}
+              </h3>
+
+              {formattedDate && (
+                <span className="text-xs text-text/40 leading-tight">
+                  • {formattedDate}
+                </span>
+              )}
+            </div>
 
             <div className="mt-1">
               <Stars rating={data.rating} />

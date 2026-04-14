@@ -193,7 +193,7 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-24 sm:bg-white lg:py-28"
+      className="relative overflow-hidden py-3 sm:bg-white lg:py-14"
     >
       <div
         className="pointer-events-none absolute inset-0"

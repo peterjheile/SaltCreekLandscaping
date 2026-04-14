@@ -41,6 +41,7 @@ class ReviewsPageContentSerializer(serializers.ModelSerializer):
 class ReviewCardSerializer(serializers.ModelSerializer):
     profileImageUrl = serializers.SerializerMethodField()
     showOnHomepage = serializers.BooleanField(source="show_on_homepage")
+    reviewDate = serializers.DateField(source="review_date", allow_null=True)
 
     class Meta:
         model = ReviewCard
@@ -51,6 +52,7 @@ class ReviewCardSerializer(serializers.ModelSerializer):
             "profileImageUrl",
             "rating",
             "showOnHomepage",
+            "reviewDate",
         )
 
     def get_profileImageUrl(self, obj):

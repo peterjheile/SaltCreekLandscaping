@@ -26,6 +26,7 @@ export type ReviewCardApi = {
   profileImageUrl: string | null;
   rating: number;
   showOnHomepage: boolean;
+  reviewDate: string | null;
 };
 
 export type ReviewCardData = {
@@ -35,4 +36,5 @@ export type ReviewCardData = {
   context: string;
   rating: number;
   showOnHomepage: boolean;
+  reviewDate: string | null;
 };

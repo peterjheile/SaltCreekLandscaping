@@ -33,6 +33,7 @@ export function mapReviewCard(apiCard: ReviewCardApi): ReviewCardData {
     context: apiCard.review,
     rating: apiCard.rating,
     showOnHomepage: apiCard.showOnHomepage,
+    reviewDate: apiCard.reviewDate,
   };
 }
 

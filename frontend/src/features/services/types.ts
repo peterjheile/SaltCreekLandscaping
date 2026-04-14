@@ -1,15 +1,6 @@
-import type { ReactNode } from "react";
+import { SERVICE_ICON_MAP } from "./icons";
 
-export const SERVICE_ICON_KEYS = [
-  "scissors",
-  "wind",
-  "layers",
-  "home",
-  "droplet",
-  "sun",
-] as const;
-
-export type ServiceIconKey = (typeof SERVICE_ICON_KEYS)[number];
+export type ServiceIconKey = keyof typeof SERVICE_ICON_MAP;
 
 export type ServiceIncludedItem = {
   id: string;

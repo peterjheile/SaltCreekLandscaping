@@ -121,6 +121,8 @@ class ReviewCard(models.Model):
         default=5,
     )
 
+    review_date = models.DateField(null=True, blank=True)
+
     show_on_homepage = models.BooleanField(
         default=False,
         help_text="If enabled, this review can be displayed on the homepage.",

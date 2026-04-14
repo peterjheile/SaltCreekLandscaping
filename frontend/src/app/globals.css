@@ -14,11 +14,11 @@
 
 
   /* Color Configuration for the website */
-  --color-primary: #013220;
-  --color-secondary: #ada18c;
-  --color-highlight: #c49c48;
-  --color-text: #000000;
-  --color-text-inverse: #ffffff;
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-highlight: var(--color-highlight);
+  --color-text: var(--color-text);
+  --color-text-inverse: var(--color-text-inverse);
 
 
 

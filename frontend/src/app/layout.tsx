@@ -56,24 +56,26 @@ export default async function RootLayout({
       lang="en"
       className={`${cinzel.variable} ${montserrat.variable} ${inter.variable} ${geist.variable}`}
     >
-      <body className="overflow-x-hidden text-text" style={themeVars}>
-        <SiteSettingsProvider value={siteSettings}>
-          <Navbar
-            businessName={siteSettings.businessName}
-            logoUrl={siteSettings.logoUrl}
-          />
+      <SiteSettingsProvider value={siteSettings}>
+        <body className="overflow-x-hidden text-text" style={themeVars}>
+          
+            <Navbar
+              businessName={siteSettings.businessName}
+              logoUrl={siteSettings.logoUrl}
+            />
 
-          <main className="mt-16 lg:mt-20">{children}</main>
+            <main className="mt-16 lg:mt-20">{children}</main>
 
-          <Footer
-            businessName={siteSettings.businessName}
-            tagline={siteSettings.tagline}
-            logoUrl={siteSettings.logoUrl}
-            facebookUrl={siteSettings.facebookUrl}
-            instagramUrl={siteSettings.instagramUrl}
-          />
-        </SiteSettingsProvider>
-      </body>
+            <Footer
+              businessName={siteSettings.businessName}
+              tagline={siteSettings.tagline}
+              logoUrl={siteSettings.logoUrl}
+              facebookUrl={siteSettings.facebookUrl}
+              instagramUrl={siteSettings.instagramUrl}
+            />
+          
+        </body>
+      </SiteSettingsProvider>
     </html>
   );
 }

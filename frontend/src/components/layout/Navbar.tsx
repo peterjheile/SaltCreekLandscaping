@@ -34,7 +34,7 @@ export default function NavbarDemo({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const buttonStyles =
-    "shadow-[0_2px_8px_rgba(0,0,0,0.06),0_6px_18px_rgba(0,0,0,0.08)] ring-1 ring-black/5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(0,0,0,0.10),0_10px_26px_rgba(0,0,0,0.12)]";
+    "bg-primary text-text-inverse shadow-[0_2px_8px_color-mix(in_srgb,var(--color-primary)_14%,transparent),0_6px_18px_color-mix(in_srgb,var(--color-primary)_18%,transparent)] ring-1 ring-primary/15 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_16px_color-mix(in_srgb,var(--color-primary)_20%,transparent),0_10px_26px_color-mix(in_srgb,var(--color-primary)_24%,transparent)]";
 
   const logoSrc = logoUrl || "/salt-creek-logo.png";
   const logoAlt = businessName ? `${businessName} logo` : "Logo";
@@ -56,7 +56,7 @@ export default function NavbarDemo({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed inset-0 z-30 bg-black/30 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-30 bg-primary/25 backdrop-blur-xl lg:hidden"
           />
         )}
       </AnimatePresence>
@@ -87,7 +87,7 @@ export default function NavbarDemo({
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-text/70"
+                className="relative text-text/70 transition-colors hover:text-primary"
               >
                 <span className="block">{item.name}</span>
               </a>

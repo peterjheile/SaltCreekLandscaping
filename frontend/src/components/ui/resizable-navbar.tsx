@@ -27,7 +27,7 @@ type NavItem = {
 };
 
 const NAV_SHADOW =
-  "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset";
+  "0 0 24px color-mix(in_srgb,var(--color-primary)_8%,transparent), 0 1px 1px color-mix(in_srgb,var(--color-primary)_10%,transparent), 0 0 0 1px color-mix(in_srgb,var(--color-primary)_8%,transparent), 0 0 4px color-mix(in_srgb,var(--color-primary)_10%,transparent), 0 16px 68px color-mix(in_srgb,var(--color-primary)_10%,transparent), 0 1px 0 color-mix(in_srgb,var(--color-text-inverse)_45%,transparent) inset";
 
 const SPRING = {
   type: "spring" as const,
@@ -103,7 +103,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => (
     style={{ minWidth: "800px" }}
     className={cn(
       "relative z-[60] mx-auto hidden h-16 w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
-      visible && "bg-text-inverse",
+      visible && "bg-text-inverse/95 ring-1 ring-primary/10",
       className,
     )}
   >
@@ -128,7 +128,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           href={item.link}
           onClick={onItemClick}
           onMouseEnter={() => setHovered(idx)}
-          className="relative inline-flex items-center rounded-full px-4 py-2 text-text/70"
+          className="relative inline-flex items-center rounded-full px-4 py-2 text-text/70 transition-colors hover:text-primary"
         >
           {hovered === idx && (
             <motion.div
@@ -151,13 +151,13 @@ export const MobileNav = ({
   <motion.div
     animate={{
       backdropFilter: visible ? "blur(16px)" : "blur(10px)",
-      boxShadow: visible ? NAV_SHADOW : "0 1px 0 rgba(0,0,0,0.04)",
+      boxShadow: visible ? NAV_SHADOW : "0 1px 0 color-mix(in_srgb,var(--color-primary)_10%,transparent)",
       borderRadius: visible ? "0px" : "0",
     }}
     transition={SPRING}
     className={cn(
       "relative z-50 mx-auto flex w-full max-w-[calc(100vw)] flex-col items-center justify-between overflow-visible px-2 py-2 lg:hidden",
-      "bg-text-inverse",
+      "bg-text-inverse/95 ring-1 ring-primary/10",
       className,
     )}
   >
@@ -200,7 +200,7 @@ export const MobileNavMenu = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed inset-0 z-40 mt-20 backdrop-blur-2xl"
+            className="fixed inset-0 z-40 mt-20 bg-primary/20 backdrop-blur-2xl"
           />
 
           <motion.div
@@ -224,7 +224,7 @@ export const MobileNavMenu = ({
               ease: [0.22, 1, 0.36, 1],
             }}
             className={cn(
-              "absolute left-0 right-0 top-full z-[60] overflow-hidden bg-text-inverse shadow-[0_24px_80px_rgba(15,23,42,0.10)] backdrop-blur-xl",
+              "absolute left-0 right-0 top-full z-[60] overflow-hidden bg-text-inverse/95 ring-1 ring-primary/10 shadow-[0_24px_80px_color-mix(in_srgb,var(--color-primary)_14%,transparent)] backdrop-blur-xl",
               className,
             )}
           >
@@ -347,11 +347,13 @@ export const NavbarButton = <T extends ElementType = "a">({
     "button relative inline-block cursor-pointer rounded-md px-4 py-2 text-center text-sm font-bold transition duration-200 hover:-translate-y-0.5";
 
   const variantStyles = {
-    primary: `bg-text-inverse text-text shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
+    primary:
+      "bg-primary text-text-inverse shadow-[0_10px_30px_color-mix(in_srgb,var(--color-primary)_18%,transparent)]",
     secondary: "bg-transparent text-text shadow-none",
-    dark: `bg-text text-text-inverse shadow-[${NAV_SHADOW.replaceAll(" ", "_")}]`,
+    dark:
+      "bg-text text-text-inverse shadow-[0_10px_30px_color-mix(in_srgb,var(--color-text)_18%,transparent)]",
     gradient:
-      "bg-primary text-text-inverse shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
+      "bg-primary text-text-inverse shadow-[0px_2px_0px_0px_color-mix(in_srgb,var(--color-text-inverse)_30%,transparent)_inset]",
   };
 
   return (

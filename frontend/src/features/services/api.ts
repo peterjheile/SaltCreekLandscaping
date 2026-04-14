@@ -1,13 +1,11 @@
+import { config } from "@/lib/config";
 import type { ServiceCategory } from "./types";
 import {
   mapApiServiceCategories,
   type ApiServiceCategory,
 } from "./utils";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
-
-const SERVICES_ENDPOINT = `${API_BASE_URL}/api/marketing/services/`;
+const SERVICES_ENDPOINT = `${config.apiBaseUrl}/api/marketing/services/`;
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -23,7 +21,7 @@ export async function getServiceCategories(): Promise<ServiceCategory[]> {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store"
+    next: { revalidate: config.revalidateSeconds },
   });
 
   const data = await parseJsonResponse<ApiServiceCategory[]>(response);

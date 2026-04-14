@@ -1,25 +1,20 @@
+import { config } from "@/lib/config";
 import type {
   ContactHeroContent,
   ContactPageContentApi,
 } from "./types";
-
 import {
   getContactHeroContentFallback,
   mapContactHeroContent,
 } from "./utils";
 
-
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
+const CONTACT_PAGE_CONTENT_ENDPOINT = `${config.apiBaseUrl}/api/marketing/contact-page-content/`;
 
 export async function getActiveContactHeroContent(): Promise<ContactHeroContent> {
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/contact-page-content/`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(CONTACT_PAGE_CONTENT_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getContactHeroContentFallback();

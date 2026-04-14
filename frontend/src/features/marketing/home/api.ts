@@ -1,3 +1,4 @@
+import { config } from "@/lib/config";
 import type {
   HomePageHeroContentApi,
   HomePageHeroContent,
@@ -12,22 +13,14 @@ import {
   mapAboutModules,
 } from "./utils";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000/";
-
-
+const HOME_PAGE_CONTENT_ENDPOINT = `${config.apiBaseUrl}/api/marketing/home-page-content/`;
+const HOME_ABOUT_MODULES_ENDPOINT = `${config.apiBaseUrl}/api/marketing/home-about-modules/`;
 
 export async function getHomePageHeroContent(): Promise<HomePageHeroContent> {
-  if (!API_BASE) {
-    return getHomePageHeroContentFallback();
-  }
-
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/home-page-content/`,
-      {
-        next: { revalidate: 0 },
-      }
-    );
+    const response = await fetch(HOME_PAGE_CONTENT_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getHomePageHeroContentFallback();
@@ -40,23 +33,10 @@ export async function getHomePageHeroContent(): Promise<HomePageHeroContent> {
   }
 }
 
-
-
-
-
-
-
-
-
-
 export async function getAboutModules(): Promise<AboutModule[]> {
-  if (!API_BASE) {
-    return getAboutModulesFallback();
-  }
-
   try {
-    const response = await fetch(`${API_BASE}/api/marketing/home-about-modules/`, {
-      next: { revalidate: 0 },
+    const response = await fetch(HOME_ABOUT_MODULES_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
     });
 
     if (!response.ok) {
@@ -70,6 +50,3 @@ export async function getAboutModules(): Promise<AboutModule[]> {
     return getAboutModulesFallback();
   }
 }
-
-
-

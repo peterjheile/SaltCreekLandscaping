@@ -1,3 +1,4 @@
+import { config } from "@/lib/config";
 import type {
   GalleryHeroContent,
   GalleryPageContentApi,
@@ -12,20 +13,15 @@ import {
   mapGalleryPhotos,
 } from "./utils";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
-
-
-
-
+const GALLERY_PAGE_CONTENT_ENDPOINT = `${config.apiBaseUrl}/api/marketing/gallery-page-content/`;
+const GALLERY_PHOTOS_ENDPOINT = `${config.apiBaseUrl}/api/marketing/gallery/`;
+const HOMEPAGE_GALLERY_PHOTOS_ENDPOINT = `${config.apiBaseUrl}/api/marketing/gallery/homepage/`;
 
 export async function getActiveGalleryHeroContent(): Promise<GalleryHeroContent> {
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/gallery-page-content/`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(GALLERY_PAGE_CONTENT_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getGalleryHeroContentFallback();
@@ -38,15 +34,10 @@ export async function getActiveGalleryHeroContent(): Promise<GalleryHeroContent>
   }
 }
 
-
-
-
-
-
 export async function getGalleryPhotos(): Promise<GalleryPhoto[]> {
   try {
-    const response = await fetch(`${API_BASE}/api/marketing/gallery/`, {
-      next: { revalidate: 60 },
+    const response = await fetch(GALLERY_PHOTOS_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
     });
 
     if (!response.ok) {
@@ -60,19 +51,11 @@ export async function getGalleryPhotos(): Promise<GalleryPhoto[]> {
   }
 }
 
-
-
-
-
-
 export async function getHomepageGalleryPhotos(): Promise<GalleryPhoto[]> {
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/gallery/homepage/`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(HOMEPAGE_GALLERY_PHOTOS_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getGalleryPhotosFallback();

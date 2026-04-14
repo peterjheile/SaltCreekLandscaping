@@ -1,27 +1,19 @@
+import { config } from "@/lib/config";
 import type {
   FAQHeroContent,
   FAQPageContentApi,
   FAQCategoryApi,
-  FAQCategoryData
+  FAQCategoryData,
 } from "./types";
 
 import {
   getFAQHeroContentFallback,
   mapFAQHeroContent,
-  normalizeFAQCategories
+  normalizeFAQCategories,
 } from "./utils";
 
-
-
-
-
-
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
-
-if (!API_BASE) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined.");
-}
+const FAQ_PAGE_CONTENT_ENDPOINT = `${config.apiBaseUrl}/api/marketing/faq-page-content/`;
+const FAQS_ENDPOINT = `${config.apiBaseUrl}/api/marketing/faqs/`;
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -31,19 +23,11 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-
-
-
-
-
 export async function getActiveFAQHeroContent(): Promise<FAQHeroContent> {
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/faq-page-content/`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(FAQ_PAGE_CONTENT_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getFAQHeroContentFallback();
@@ -56,22 +40,14 @@ export async function getActiveFAQHeroContent(): Promise<FAQHeroContent> {
   }
 }
 
-
-
-
-
-
-
-
-//Here we have the faq api calls
-const FAQS_ENDPOINT = `${API_BASE}/api/marketing/faqs/`;
+// FAQ categories
 export async function getFAQCategories(): Promise<FAQCategoryData[]> {
   const response = await fetch(FAQS_ENDPOINT, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    next: { revalidate: config.revalidateSeconds },
   });
 
   const data = await handleResponse<FAQCategoryApi[]>(response);

@@ -1,3 +1,4 @@
+import { config } from "@/lib/config";
 import type {
   ServiceHeroContent,
   ServicePageContentApi,
@@ -8,18 +9,13 @@ import {
   mapServiceHeroContent,
 } from "./utils";
 
-
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
+const SERVICE_PAGE_CONTENT_ENDPOINT = `${config.apiBaseUrl}/api/marketing/service-page-content/`;
 
 export async function getActiveServiceHeroContent(): Promise<ServiceHeroContent> {
   try {
-    const response = await fetch(
-      `${API_BASE}/api/marketing/service-page-content/`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+    const response = await fetch(SERVICE_PAGE_CONTENT_ENDPOINT, {
+      next: { revalidate: config.revalidateSeconds },
+    });
 
     if (!response.ok) {
       return getServiceHeroContentFallback();

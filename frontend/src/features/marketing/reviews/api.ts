@@ -1,3 +1,4 @@
+import { config } from "@/lib/config";
 import type {
   ReviewsPageContentApi,
   ReviewsHeroContent,
@@ -11,12 +12,9 @@ import {
   normalizeReviewCards,
 } from "./utils";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
-
-if (!API_BASE) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined.");
-}
+const REVIEW_HERO_ENDPOINT = `${config.apiBaseUrl}/api/marketing/reviews-page-content/`;
+const REVIEW_CARDS_ENDPOINT = `${config.apiBaseUrl}/api/marketing/reviews/`;
+const HOMEPAGE_REVIEW_CARDS_ENDPOINT = `${config.apiBaseUrl}/api/marketing/reviews/homepage/`;
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -26,8 +24,6 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-const REVIEW_HERO_ENDPOINT = `${API_BASE}/api/marketing/reviews-page-content/`;
-
 export async function getActiveReviewsHeroContent(): Promise<ReviewsHeroContent> {
   try {
     const response = await fetch(REVIEW_HERO_ENDPOINT, {
@@ -35,7 +31,7 @@ export async function getActiveReviewsHeroContent(): Promise<ReviewsHeroContent>
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "no-store",
+      next: { revalidate: config.revalidateSeconds },
     });
 
     if (!response.ok) {
@@ -50,36 +46,18 @@ export async function getActiveReviewsHeroContent(): Promise<ReviewsHeroContent>
   }
 }
 
-
-
-
-
-
-
-const REVIEW_CARDS_ENDPOINT = `${API_BASE}/api/marketing/reviews/`;
-
 export async function getReviewCards(): Promise<ReviewCardData[]> {
   const response = await fetch(REVIEW_CARDS_ENDPOINT, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    next: { revalidate: config.revalidateSeconds },
   });
 
   const data = await handleResponse<ReviewCardApi[]>(response);
   return normalizeReviewCards(data);
 }
-
-
-
-
-
-
-
-
-
-const HOMEPAGE_REVIEW_CARDS_ENDPOINT = `${API_BASE}/api/marketing/reviews/homepage/`;
 
 export async function getHomepageReviewCards(): Promise<ReviewCardData[]> {
   const response = await fetch(HOMEPAGE_REVIEW_CARDS_ENDPOINT, {
@@ -87,7 +65,7 @@ export async function getHomepageReviewCards(): Promise<ReviewCardData[]> {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    next: { revalidate: config.revalidateSeconds },
   });
 
   const data = await handleResponse<ReviewCardApi[]>(response);

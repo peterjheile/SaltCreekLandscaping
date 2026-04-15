@@ -1,11 +1,12 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from .models import GalleryPageContent, GalleryPhoto
 
 
 @admin.register(GalleryPageContent)
-class GalleryPageContentAdmin(admin.ModelAdmin):
+class GalleryPageContentAdmin(ModelAdmin):
     list_display = (
         "name",
         "title",
@@ -67,7 +68,7 @@ class GalleryPageContentAdmin(admin.ModelAdmin):
 
 
 @admin.register(GalleryPhoto)
-class GalleryPhotoAdmin(admin.ModelAdmin):
+class GalleryPhotoAdmin(ModelAdmin):
     list_display = (
         "title",
         "show_on_homepage",

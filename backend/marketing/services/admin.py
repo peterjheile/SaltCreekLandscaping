@@ -1,4 +1,5 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from .models import (
@@ -10,7 +11,7 @@ from .models import (
 
 
 @admin.register(ServicePageContent)
-class ServicePageContentAdmin(admin.ModelAdmin):
+class ServicePageContentAdmin(ModelAdmin):
     list_display = (
         "name",
         "title",
@@ -72,7 +73,7 @@ class ServiceCategoryIncludedItemInline(admin.TabularInline):
 
 
 @admin.register(ServiceCategory)
-class ServiceCategoryAdmin(admin.ModelAdmin):
+class ServiceCategoryAdmin(ModelAdmin):
     list_display = (
         "title",
         "eyebrow",
@@ -150,6 +151,6 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(ServiceIncludedItem)
-class ServiceIncludedItemAdmin(admin.ModelAdmin):
+class ServiceIncludedItemAdmin(ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)

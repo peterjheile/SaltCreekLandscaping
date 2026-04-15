@@ -1,11 +1,12 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from .models import ContactPageContent
 
 
 @admin.register(ContactPageContent)
-class ContactPageContentAdmin(admin.ModelAdmin):
+class ContactPageContentAdmin(ModelAdmin):
     list_display = (
         "name",
         "title",

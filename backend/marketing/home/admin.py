@@ -1,11 +1,12 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from .models import HomePageHeroContent, AboutModule
 
 
 @admin.register(HomePageHeroContent)
-class HomePageHeroContentAdmin(admin.ModelAdmin):
+class HomePageHeroContentAdmin(ModelAdmin):
     list_display = (
         "name",
         "is_active",
@@ -99,7 +100,7 @@ class HomePageHeroContentAdmin(admin.ModelAdmin):
 
 
 @admin.register(AboutModule)
-class AboutModuleAdmin(admin.ModelAdmin):
+class AboutModuleAdmin(ModelAdmin):
     list_display = (
         "title",
         "sort_order",

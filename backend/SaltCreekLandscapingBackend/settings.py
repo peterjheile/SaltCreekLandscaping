@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from django.templatetags.static import static
 
 # ========================
 # BASE / ENV
@@ -61,10 +62,21 @@ STATIC_ROOT = BASE_DIR / os.getenv("STATIC_ROOT", "staticfiles")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / os.getenv("MEDIA_ROOT", "media")
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 # ========================
 # APPLICATIONS
 # ========================
 INSTALLED_APPS = [
+    # admin styled library for interface
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+
+    # internal django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -163,3 +175,35 @@ USE_TZ = True
 # DEFAULTS
 # ========================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+
+UNFOLD = {
+    "SITE_TITLE": "Salt Creek Landscaping",
+    "SITE_HEADER": "Salt Creek Landscaping",
+    "SITE_SUBHEADER": "Admin Dashboard",
+    "SITE_ICON": {
+        "light": lambda request: static("SaltCreekIconLight.png"),  # light mode
+        "dark": lambda request: static("SaltCreekIconDark.png"),  # dark mode
+    },
+    "SITE_LOGO": {
+        "light": lambda request: static("SaltCreekLogoLight.svg"),  # light mode
+        "dark": lambda request: static("SaltCreekLogoDark.svg"),  # dark mode
+    },
+    "COLORS": {
+        "primary": {
+            "50": "#eef2ff",
+            "100": "#dbe4ff",
+            "200": "#b9c9ff",
+            "300": "#8fa7ff",
+            "400": "#5f7cff",
+            "500": "#14266b",
+            "600": "#11215d",
+            "700": "#0e1b4d",
+            "800": "#0b153d",
+            "900": "#08102f",
+            "950": "#05091c",
+        },
+    },
+}

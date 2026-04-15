@@ -1,11 +1,12 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from .models import FAQPageContent, FAQCategory, FAQ
 
 
 @admin.register(FAQPageContent)
-class FAQPageContentAdmin(admin.ModelAdmin):
+class FAQPageContentAdmin(ModelAdmin):
     list_display = (
         "name",
         "title",
@@ -63,7 +64,7 @@ class FAQPageContentAdmin(admin.ModelAdmin):
 
 
 @admin.register(FAQCategory)
-class FAQCategoryAdmin(admin.ModelAdmin):
+class FAQCategoryAdmin(ModelAdmin):
     list_display = (
         "name",
         "slug",
@@ -80,7 +81,7 @@ class FAQCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(FAQ)
-class FAQAdmin(admin.ModelAdmin):
+class FAQAdmin(ModelAdmin):
     list_display = (
         "question",
         "category",

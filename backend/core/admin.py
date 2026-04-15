@@ -1,8 +1,9 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline
 from .models import SiteSettings, BusinessHour
 
 
-class BusinessHourInline(admin.TabularInline):
+class BusinessHourInline(TabularInline):
     model = BusinessHour
     extra = 1
     fields = (
@@ -41,7 +42,7 @@ class BusinessHourInline(admin.TabularInline):
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(admin.ModelAdmin):
+class SiteSettingsAdmin(ModelAdmin):
     inlines = [BusinessHourInline]
 
     fieldsets = (
@@ -109,7 +110,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 
 @admin.register(BusinessHour)
-class BusinessHourAdmin(admin.ModelAdmin):
+class BusinessHourAdmin(ModelAdmin):
     list_display = (
         "label",
         "open_time",

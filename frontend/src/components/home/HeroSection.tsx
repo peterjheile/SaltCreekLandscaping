@@ -14,9 +14,8 @@ export default async function HeroSection() {
     <div className = "relative">
 
 
-    <HeroHeader heroContent={HomepageHeroContent}/>
+      <HeroHeader heroContent={HomepageHeroContent}/>
 
-    
     </div>
   );
 }

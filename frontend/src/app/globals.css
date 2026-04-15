@@ -69,6 +69,13 @@
 }
 
 :root {
+  --font-sans: var(--font-geist-sans);
+  --font-cinzel: var(--font-cinzel);
+  --font-montserrat: var(--font-montserrat);
+  --font-inter: var(--font-inter);
+
+
+
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
   --color-highlight: var(--color-highlight);

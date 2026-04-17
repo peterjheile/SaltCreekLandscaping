@@ -85,6 +85,8 @@ class QuoteRequestCreateView(CreateAPIView):
     queryset = QuoteRequest.objects.all()
     serializer_class = QuoteRequestSerializer
     throttle_classes = [QuoteRequestThrottle]
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     def create(self, request, *args, **kwargs):
         # Honeypot: pretend success, but do nothing

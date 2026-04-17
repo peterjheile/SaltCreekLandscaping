@@ -171,7 +171,7 @@ export const MobileNavHeader = ({
 }: MobileNavHeaderProps) => (
   <div
     className={cn(
-      "relative z-[70] flex w-full flex-row items-center justify-between text-text",
+      "relative z-[70] pl-3 flex w-full flex-row items-center justify-between text-text",
       className,
     )}
   >

@@ -7,8 +7,6 @@ export default async function(){
     const ReviewHeroContent = await getActiveReviewsHeroContent();
     const ReviewCards = await getReviewCards();
 
-    console.log(ReviewCards);
-
 
     return (
         <ReviewAll reviews = {ReviewCards} heroContent={ReviewHeroContent}/>

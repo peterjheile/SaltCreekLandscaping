@@ -24,23 +24,6 @@ export default function HomePage() {
       <AboutSection/>
 
       <TestimonySection/>
-
-      {/* <AboutSection/>
-
-
-      <TestimonySection/> */}
-
-      
-      {/* <HeroSection/>
-
-      <AboutSection/>
-
-      <TestimonySection/> */}
-      
-
-      {/* <div className = "relative h-[1000px]">
-        MORE WILL GO HERE
-      </div> */}
       
     </section>
   );

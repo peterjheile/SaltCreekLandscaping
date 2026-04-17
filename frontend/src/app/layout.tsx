@@ -7,6 +7,8 @@ import type { CSSProperties } from "react";
 
 import { getSiteSettings } from "@/features/core/api";
 import { SiteSettingsProvider } from "@/features/core/providers";
+import { QuoteRequestModalProvider } from "@/features/quote-request/QuoteRequestModalProvider";
+import { getServiceCategories } from "@/features/services/api";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -42,6 +44,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const siteSettings = await getSiteSettings();
+  const serviceCategories = await getServiceCategories();
 
   const themeVars = {
     "--color-primary": siteSettings.primaryColor,
@@ -57,6 +60,7 @@ export default async function RootLayout({
       className={`${cinzel.variable} ${montserrat.variable} ${inter.variable} ${geist.variable}`}
     >
       <SiteSettingsProvider value={siteSettings}>
+        <QuoteRequestModalProvider serviceCategories={serviceCategories}>
         <body className="overflow-x-hidden text-text" style={themeVars}>
           
             <Navbar
@@ -75,6 +79,7 @@ export default async function RootLayout({
             />
           
         </body>
+        </QuoteRequestModalProvider>
       </SiteSettingsProvider>
     </html>
   );

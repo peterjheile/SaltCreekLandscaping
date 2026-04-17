@@ -10,6 +10,9 @@ import type {
   ReviewsHeroContent,
 } from "@/features/marketing/reviews/types";
 
+
+import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
+
 type ReviewAllProps = {
   reviews: ReviewCardData[];
   heroContent: ReviewsHeroContent | null;
@@ -55,6 +58,8 @@ export default function ReviewAll({
   heroContent,
 }: ReviewAllProps) {
   const totalReviews = reviews.length;
+
+  const { openQuoteRequestModal } = useQuoteRequestModal();
 
   const averageRating = useMemo(() => {
     if (totalReviews === 0) return 0;
@@ -266,12 +271,12 @@ export default function ReviewAll({
               Join our happy clients and get a free quote today.
             </p>
 
-            <a
-              href="#contact"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+            <div
+              className="mt-6 hover:cursor-pointer inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+              onClick = {() => openQuoteRequestModal()}
             >
-              Book a service
-            </a>
+              Book a Free Quote
+            </div>
           </motion.div>
         </div>
       </section>

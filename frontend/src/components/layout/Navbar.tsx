@@ -13,6 +13,8 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
+import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
+
 type NavbarDemoProps = {
   businessName: string;
   logoUrl: string | null;
@@ -33,11 +35,14 @@ export default function NavbarDemo({
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const { openQuoteRequestModal } = useQuoteRequestModal();
+
   const buttonStyles =
     "bg-primary text-text-inverse shadow-[0_2px_8px_color-mix(in_srgb,var(--color-primary)_14%,transparent),0_6px_18px_color-mix(in_srgb,var(--color-primary)_18%,transparent)] ring-1 ring-primary/15 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_16px_color-mix(in_srgb,var(--color-primary)_20%,transparent),0_10px_26px_color-mix(in_srgb,var(--color-primary)_24%,transparent)]";
 
   const logoSrc = logoUrl || "/salt-creek-logo.png";
   const logoAlt = businessName ? `${businessName} logo` : "Logo";
+
 
   const Logo = () => (
     <img
@@ -66,8 +71,8 @@ export default function NavbarDemo({
           <Logo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="primary" className={buttonStyles}>
-              Book Service
+            <NavbarButton variant="primary" className={buttonStyles} onClick={() => openQuoteRequestModal()}>
+              Book Quote
             </NavbarButton>
           </div>
         </NavBody>
@@ -95,11 +100,11 @@ export default function NavbarDemo({
 
             <div className="mt-5 flex w-full flex-col gap-4">
               <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => openQuoteRequestModal()}
                 variant="primary"
                 className={`w-full ${buttonStyles}`}
               >
-                Book a Service
+                Book a Quote
               </NavbarButton>
             </div>
           </MobileNavMenu>

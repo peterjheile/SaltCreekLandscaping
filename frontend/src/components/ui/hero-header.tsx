@@ -15,10 +15,39 @@ import {
 
 import type { HomePageHeroContent } from "@/features/marketing/home/types";
 import { useSiteSettings } from "@/features/core/providers";
+import { useQuoteRequestModal } from "@/features/quote-request/useQuoteRequestModel";
 
 type HeroHeaderProps = {
   heroContent: HomePageHeroContent;
 };
+
+
+function BookServiceButton() {
+  const { openQuoteRequestModal } = useQuoteRequestModal();
+
+  return (
+    <button
+      type="button"
+      onClick={() => openQuoteRequestModal()}
+      className="inline-flex transform-gpu hover:-translate-y-1 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] transition hover:cursor-pointer hover:shadow-[0_16px_34px_rgba(0,0,0,0.22)]"
+      style={{
+        background: "var(--color-text-inverse)",
+        color: "var(--color-text)",
+      }}
+    >
+      Get a Free Quote
+      <FiArrowRight
+        className="h-4 w-4 translate-y-[1px]"
+        style={{ color: "var(--color-text)" }}
+      />
+    </button>
+  );
+}
+
+
+
+
+
 
 export default function HeroHeader({
   heroContent,
@@ -30,6 +59,8 @@ export default function HeroHeader({
 
   const hasVideo = Boolean(heroContent.videoUrl);
   const phone = siteSettings.phone || "+10000000000";
+
+  
 
   useEffect(() => {
     setIsMounted(true);
@@ -102,20 +133,8 @@ export default function HeroHeader({
               transition={{ duration: 0.55, delay: 0.16 }}
               className="mt-9 flex flex-col gap-3 sm:flex-row"
             >
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] transition hover:translate-y-[-1px] hover:shadow-[0_16px_34px_rgba(0,0,0,0.22)]"
-                style={{
-                  background: "var(--color-text-inverse)",
-                  color: "var(--color-text)",
-                }}
-              >
-                Book a Service
-                <FiArrowRight
-                  className="h-4 w-4"
-                  style={{ color: "var(--color-text)" }}
-                />
-              </a>
+              
+              <BookServiceButton />
 
               <a
                 href={`tel:+1${formattedPhone}`}

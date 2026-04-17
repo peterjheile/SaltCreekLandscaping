@@ -7,6 +7,8 @@ import type { ServiceCategory } from "@/features/services/types";
 import type { ServiceHeroContent } from "@/features/marketing/services/types";
 import { ServiceIcon } from "@/features/services/icons";
 
+import { useQuoteRequestModal } from "@/features/quote-request/useQuoteRequestModel";
+
 type ServicesHeroProps = {
   heroContent: ServiceHeroContent | null;
 };
@@ -19,6 +21,9 @@ function ServicesHero({ heroContent }: ServicesHeroProps) {
     heroContent?.subtitle ||
     "From routine lawn care to seasonal cleanups, every service is designed to deliver clean finishes and a property you can feel confident about.";
   const heroImageUrl = heroContent?.heroImageUrl || "/lawn.png";
+
+
+  const { openQuoteRequestModal } = useQuoteRequestModal();
 
   return (
     <section className="relative overflow-hidden">
@@ -63,11 +68,11 @@ function ServicesHero({ heroContent }: ServicesHeroProps) {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="mt-9 flex flex-wrap gap-3"
           >
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-text transition hover:opacity-90"
+            <div
+              className="inline-flex hover:cursor-pointer items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-text transition hover:opacity-90"
+              onClick = {() => openQuoteRequestModal()}
             >
-              Book a service
+              Book a Quote
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -81,7 +86,7 @@ function ServicesHero({ heroContent }: ServicesHeroProps) {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </a>
+            </div>
             <button
               onClick={() => {
                 const el = document.getElementById("services-list");
@@ -109,6 +114,7 @@ function ServiceItem({
   index: number;
 }) {
   const [open, setOpen] = React.useState(false);
+  const { openQuoteRequestModal } = useQuoteRequestModal();
 
   return (
     <motion.div
@@ -201,8 +207,9 @@ function ServiceItem({
                     <a
                       href="#contact"
                       className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+                      onClick={() => openQuoteRequestModal(service.id)}
                     >
-                      Book this service
+                      Request this service
                       <svg
                         className="h-3.5 w-3.5"
                         fill="none"
@@ -318,7 +325,7 @@ export default function ServicesPage({
             </p>
 
             <a
-              href="#contact"
+              href="/contact"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
             >
               Get in touch

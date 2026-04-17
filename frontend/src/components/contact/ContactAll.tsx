@@ -12,16 +12,8 @@ import {
 
 import type { ContactHeroContent } from "@/features/marketing/contact/types";
 import { useSiteSettings } from "@/features/core/providers";
-
-// ── Config — keep only non-site-settings constants ───────────────────────────
-const MESSAGE_PRESETS = [
-  "I'd like to schedule a free quote.",
-  "I'm interested in recurring lawn maintenance.",
-  "I need a one-time seasonal cleanup.",
-  "I have a question about pricing.",
-  "I'd like to discuss a landscaping project.",
-];
-// ─────────────────────────────────────────────────────────────────────────────
+import { submitContactMessage } from "@/features/messaging/api";
+import { CONTACT_MESSAGE_PRESETS } from "@/features/messaging/presets";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -46,6 +38,17 @@ function SocialIcon({ icon }: { icon: string }) {
     );
   }
 
+  if (icon === "google-business") {
+    return (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 11.636v2.91h4.091c-.164.982-.764 1.814-1.636 2.373v1.964h2.646c1.55-1.427 2.444-3.532 2.444-6.019 0-.573-.05-1.123-.145-1.655H12z" />
+        <path d="M12 20c2.209 0 4.064-.727 5.419-1.964l-2.646-1.964c-.727.487-1.655.782-2.773.782-2.123 0-3.923-1.432-4.564-3.355H4.7v2.023A8.18 8.18 0 0012 20z" />
+        <path d="M7.436 13.499A4.93 4.93 0 017.182 12c0-.518.091-1.018.254-1.499V8.478H4.7A8.18 8.18 0 003.818 12c0 1.318.314 2.568.882 3.522l2.736-2.023z" />
+        <path d="M12 7.145c1.2 0 2.273.414 3.123 1.227l2.341-2.341C16.059 4.723 14.204 4 12 4A8.18 8.18 0 004.7 8.478l2.736 2.023C8.077 8.577 9.877 7.145 12 7.145z" />
+      </svg>
+    );
+  }
+
   return null;
 }
 
@@ -54,7 +57,11 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [hp, setHp] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [formState, setFormState] = useState<FormState>("idle");
 
   const eyebrow = heroContent?.eyebrow || "Get in touch";
@@ -109,33 +116,68 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
           },
         ]
       : []),
+    ...(siteSettings.googleBusinessUrl
+      ? [
+          {
+            label: "Google Business",
+            href: siteSettings.googleBusinessUrl,
+            icon: "google-business",
+          },
+        ]
+      : []),
   ];
 
-  const handlePreset = (preset: string) => {
-    setMessage(preset);
+  const handlePreset = (preset: (typeof CONTACT_MESSAGE_PRESETS)[number]) => {
+    setSubject(preset.subject);
+    setMessage(preset.message);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) return;
 
+    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
+      setErrorMessage("Please fill out all required fields.");
+      setFormState("error");
+      return;
+    }
+
+    setErrorMessage("");
     setFormState("submitting");
 
-    // TODO: replace with your actual form submission logic
-    await new Promise((r) => setTimeout(r, 1400));
-    setFormState("success");
+    try {
+      await submitContactMessage({
+        name: name.trim(),
+        email: email.trim(),
+        phone: phoneInput.trim(),
+        subject: subject.trim(),
+        message: message.trim(),
+        hp,
+      });
+
+      setFormState("success");
+    } catch (error) {
+      setFormState("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    }
   };
 
   const handleReset = () => {
     setName("");
     setEmail("");
+    setPhoneInput("");
+    setSubject("");
     setMessage("");
+    setHp("");
+    setErrorMessage("");
     setFormState("idle");
   };
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
-      {/* Hero */}
       <section className="relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -175,18 +217,15 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
         </div>
       </section>
 
-      {/* Divider */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
           <div className="h-[3px] w-full bg-white" />
         </div>
       </section>
 
-      {/* Main content */}
       <section className="bg-white">
         <div className="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
           <div className="grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16 xl:gap-24">
-            {/* Left: contact form */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -238,12 +277,14 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
                     </p>
 
                     <div className="mb-6 flex flex-wrap gap-2">
-                      {MESSAGE_PRESETS.map((preset) => {
-                        const isActive = message === preset;
+                      {CONTACT_MESSAGE_PRESETS.map((preset) => {
+                        const isActive =
+                          subject === preset.subject &&
+                          message === preset.message;
 
                         return (
                           <button
-                            key={preset}
+                            key={preset.label}
                             type="button"
                             onClick={() => handlePreset(preset)}
                             className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${
@@ -252,7 +293,7 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
                                 : "border-primary/20 bg-primary/5 text-primary"
                             }`}
                           >
-                            {preset}
+                            {preset.label}
                           </button>
                         );
                       })}
@@ -315,6 +356,73 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
                         </div>
                       </div>
 
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div className="flex flex-col gap-1.5">
+                          <label
+                            htmlFor="phone-input"
+                            className="text-xs font-semibold uppercase tracking-wider text-primary"
+                          >
+                            Phone number{" "}
+                            <span className="text-text/45 normal-case">
+                              (optional)
+                            </span>
+                          </label>
+
+                          <input
+                            id="phone-input"
+                            type="tel"
+                            value={phoneInput}
+                            onChange={(e) => setPhoneInput(e.target.value)}
+                            placeholder="(812) 555-1234"
+                            className="rounded-xl border border-primary/20 bg-white px-4 py-3 text-sm text-text outline-none transition placeholder:text-text/40 focus:ring-2"
+                            style={
+                              {
+                                "--tw-ring-color":
+                                  "color-mix(in srgb, var(--color-primary) 25%, transparent)",
+                              } as React.CSSProperties
+                            }
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label
+                            htmlFor="subject"
+                            className="text-xs font-semibold uppercase tracking-wider text-primary"
+                          >
+                            Subject <span className="text-red-400">*</span>
+                          </label>
+
+                          <input
+                            id="subject"
+                            type="text"
+                            required
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                            placeholder="How can we help?"
+                            className="rounded-xl border border-primary/20 bg-white px-4 py-3 text-sm text-text outline-none transition placeholder:text-text/40 focus:ring-2"
+                            style={
+                              {
+                                "--tw-ring-color":
+                                  "color-mix(in srgb, var(--color-primary) 25%, transparent)",
+                              } as React.CSSProperties
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="hidden" aria-hidden="true">
+                        <label htmlFor="hp">Leave this field empty</label>
+                        <input
+                          id="hp"
+                          name="hp"
+                          type="text"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          value={hp}
+                          onChange={(e) => setHp(e.target.value)}
+                        />
+                      </div>
+
                       <div className="flex flex-col gap-1.5">
                         <label
                           htmlFor="message"
@@ -339,6 +447,10 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
                           }
                         />
                       </div>
+
+                      {formState === "error" && errorMessage ? (
+                        <p className="text-sm text-red-500">{errorMessage}</p>
+                      ) : null}
 
                       <button
                         type="submit"
@@ -393,7 +505,6 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
               </AnimatePresence>
             </motion.div>
 
-            {/* Right: contact info */}
             <motion.aside
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

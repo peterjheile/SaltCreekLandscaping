@@ -9,6 +9,8 @@ import type {
   GalleryPhoto,
 } from "@/features/marketing/gallery/types";
 
+import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
+
 type GalleryImageWithAspect = GalleryPhoto & {
   stableAspect: string;
   stableIndex: number;
@@ -317,6 +319,8 @@ export default function GalleryPage({
 }: GalleryPageProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const { openQuoteRequestModal } = useQuoteRequestModal();
+
   const openLightbox = useCallback((index: number) => {
     setLightboxIndex(index);
   }, []);
@@ -413,10 +417,10 @@ export default function GalleryPage({
             </p>
 
             <a
-              href="#contact"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+              className="mt-6 hover:cursor-pointer inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+              onClick = {() => openQuoteRequestModal()}
             >
-              Book a service
+              <p>Book a Free Quote</p>
               <svg
                 className="h-4 w-4"
                 fill="none"

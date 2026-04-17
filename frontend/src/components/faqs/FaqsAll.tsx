@@ -159,7 +159,7 @@ export default function FAQsAll({
 
       {/* FAQ Content */}
       <section className="bg-white">
-        <div className="mx-auto max-w-3xl px-6 py-16">
+        <div className="mx-auto max-w-5xl px-6 pt-16">
           {categories.map((category) => (
             <div key={category.id} className="mb-12">
               <div className="mb-6 flex items-center gap-3">
@@ -177,7 +177,59 @@ export default function FAQsAll({
             </div>
           ))}
         </div>
+
+
+
+
+        <div className="mx-auto w-full max-w-5xl px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45 }}
+            className="mt-14 rounded-[1.75rem] border border-primary/15 bg-[color:color-mix(in_srgb,var(--color-primary)_6%,white)] px-8 py-10 text-center"
+          >
+            <p className="text-xl font-semibold text-primary">
+              Have a different question?
+            </p>
+
+            <p className="mt-2 text-sm text-text/70">
+              We’ll reach out within one business day to help with any questions.
+            </p>
+
+            <a
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
+            >
+              Ask a Question
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </a>
+          </motion.div>
+        </div>
+
+
+
+
+
+
+        
       </section>
+      
+
+
+
     </main>
   );
 }

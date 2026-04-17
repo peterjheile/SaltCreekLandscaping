@@ -4,10 +4,15 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.permissions import AllowAny
+
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import *
 from .serializers import *
 from core.models import SiteSettings
+
+
 
 
 class ContactMessageThrottle(AnonRateThrottle):
@@ -22,6 +27,10 @@ class ContactMessageCreateView(CreateAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
     throttle_classes = [ContactMessageThrottle]
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+
 
     def create(self, request, *args, **kwargs):
         if request.data.get("hp"):

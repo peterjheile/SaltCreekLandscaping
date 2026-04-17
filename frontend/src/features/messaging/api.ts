@@ -9,6 +9,7 @@ import type {
 const CONTACT_MESSAGES_ENDPOINT = `${config.apiBaseUrl}/api/inbox/contact-messages/`;
 const QUOTE_REQUESTS_ENDPOINT = `${config.apiBaseUrl}/api/inbox/quote-requests/`;
 
+
 async function parseJsonResponse<T>(response: Response): Promise<T> {
   let data: T | { detail?: string } | null = null;
 

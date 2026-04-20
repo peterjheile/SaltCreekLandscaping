@@ -118,7 +118,7 @@ class QuoteRequestCreateView(CreateAPIView):
             )
         )
 
-        subject = f"[{business_name} Quote Request] {selected_category} Request"
+        subject = f"[{business_name} Quote Request] Service: {selected_category} Request"
 
         body = (
             f"New quote request submission\n\n"

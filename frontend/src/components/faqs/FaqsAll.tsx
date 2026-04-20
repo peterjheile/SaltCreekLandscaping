@@ -62,7 +62,9 @@ function FAQItem({ faq, index }: { faq: FAQ; index: number }) {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <p className="pb-5 text-sm text-text/70">{faq.answer}</p>
+            <p className="pb-5 text-sm text-text/70 whitespace-pre-line">
+              {faq.answer}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -7,3 +7,15 @@ services:
       - ./backend/.env
     volumes:
       - ./backend/media:/app/media
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+        NEXT_PUBLIC_REVALIDATE_SECONDS: 0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

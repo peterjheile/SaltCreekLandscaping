@@ -6,6 +6,7 @@ export type HomePageHeroContentApi = {
   title: string;
   subtitle: string;
   expect_items: string[];
+  image_url: string | null;
   video_url: string | null;
   is_active: boolean;
   sort_order: number;
@@ -13,18 +14,14 @@ export type HomePageHeroContentApi = {
   updated_at: string;
 };
 
-
 export type HomePageHeroContent = {
   eyebrow: string;
   title: string;
   subtitle: string;
   expectItems: string[];
+  imageUrl: string | null;
   videoUrl: string | null;
 };
-
-
-
-
 
 export type AboutModuleApi = {
   title: string;

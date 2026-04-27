@@ -8,6 +8,7 @@ import type { ServiceHeroContent } from "@/features/marketing/services/types";
 import { ServiceIcon } from "@/features/services/icons";
 
 import { useQuoteRequestModal } from "@/features/quote-request/useQuoteRequestModel";
+import { useServiceCategories } from "@/features/services/ServiceProvider";
 
 type ServicesHeroProps = {
   heroContent: ServiceHeroContent | null;
@@ -266,14 +267,16 @@ function ServiceItem({
 }
 
 type ServicesPageProps = {
-  services: ServiceCategory[];
   heroContent: ServiceHeroContent | null;
 };
 
 export default function ServicesPage({
-  services,
   heroContent,
 }: ServicesPageProps) {
+  const services = useServiceCategories();
+
+
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
       <ServicesHero heroContent={heroContent} />

@@ -13,6 +13,7 @@ export function mapHomePageHeroContent(
     title: data.title,
     subtitle: data.subtitle,
     expectItems: data.expect_items ?? [],
+    imageUrl: data.image_url,
     videoUrl: data.video_url,
   };
 }
@@ -23,6 +24,7 @@ export function getHomePageHeroContentFallback(): HomePageHeroContent {
     title: "",
     subtitle: "",
     expectItems: [],
+    imageUrl: null,
     videoUrl: null,
   };
 }

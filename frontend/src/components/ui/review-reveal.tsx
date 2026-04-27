@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useMemo, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  MotionValue,
-} from "motion/react";
+import { motion, useInView } from "motion/react";
 import { Star } from "lucide-react";
 
 import { ReviewCard } from "@/components/ui/review-card";
@@ -68,7 +63,9 @@ function getOffset(from: EntryDirection) {
   }
 }
 
-function truncateText(text: string, maxChars: number) {
+function truncateText(text: string | null | undefined, maxChars: number) {
+  if (!text) return "";
+
   if (text.length <= maxChars) {
     return text;
   }
@@ -102,7 +99,7 @@ function AnimatedGridCard({
   review,
   index,
   from,
-  progress,
+  isInView,
   horizontalOnly = false,
   horizontalDistance = 100,
   featured = false,
@@ -110,12 +107,13 @@ function AnimatedGridCard({
   review: ReviewCardData;
   index: number;
   from: EntryDirection;
-  progress: MotionValue<number>;
+  isInView: boolean;
   horizontalOnly?: boolean;
   horizontalDistance?: number;
   featured?: boolean;
 }) {
   const desktopOffset = getOffset(from);
+
   const sideOnlyOffset = {
     x: index % 2 === 0 ? -horizontalDistance : horizontalDistance,
     y: 0,
@@ -123,14 +121,34 @@ function AnimatedGridCard({
 
   const activeOffset = horizontalOnly ? sideOnlyOffset : desktopOffset;
 
-  const x = useTransform(progress, [0, 1], [activeOffset.x, 0]);
-  const y = useTransform(progress, [0, 1], [activeOffset.y, 0]);
-  const opacity = useTransform(progress, [0, 0.2, 1], [0, 0.65, 1]);
-  const scale = useTransform(progress, [0, 1], [0.92, 1]);
-
   return (
     <motion.div
-      style={{ x, y, opacity, scale }}
+      initial={{
+        x: activeOffset.x,
+        y: activeOffset.y,
+        opacity: 0,
+        scale: 0.92,
+      }}
+      animate={
+        isInView
+          ? {
+              x: 0,
+              y: 0,
+              opacity: 1,
+              scale: 1,
+            }
+          : {
+              x: activeOffset.x,
+              y: activeOffset.y,
+              opacity: 0,
+              scale: 0.92,
+            }
+      }
+      transition={{
+        duration: 0.75,
+        delay: index * 0.25,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className="relative z-0 flex w-full justify-center will-change-transform"
     >
       <ReviewCard data={review} featured={featured} />
@@ -140,6 +158,11 @@ function AnimatedGridCard({
 
 export function ReviewReveal({ reviews }: ReviewRevealProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const isInView = useInView(sectionRef, {
+    once: true,
+    amount: 0.22,
+  });
 
   const totalReviews = reviews.length;
 
@@ -154,37 +177,17 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
     [reviews]
   );
 
-  const homepageReviewCount = homepageReviews.length;
-
   const avgRating = useMemo(() => {
-    if (homepageReviewCount === 0) return 0;
+    if (totalReviews === 0) return 0;
 
     return (
-      homepageReviews.reduce((sum, review) => sum + review.rating, 0) /
-      homepageReviewCount
+      reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
     );
-  }, [homepageReviews, homepageReviewCount]);
+  }, [reviews, totalReviews]);
 
   const mobileReviews = homepageReviews.slice(0, MOBILE_SLOTS.length);
   const tabletReviews = homepageReviews.slice(0, TABLET_SLOTS.length);
   const desktopReviews = homepageReviews.slice(0, DESKTOP_SLOTS.length);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 92%", "end 78%"],
-  });
-
-  const mobileProgress = useTransform(scrollYProgress, [0, 0.38], [0, 1], {
-    clamp: true,
-  });
-
-  const tabletProgress = useTransform(scrollYProgress, [0, 0.43], [0, 1], {
-    clamp: true,
-  });
-
-  const desktopProgress = useTransform(scrollYProgress, [0, 0.55], [0, 1], {
-    clamp: true,
-  });
 
   if (!homepageReviews.length) {
     return null;
@@ -229,12 +232,14 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
             }}
           >
             <AverageStars rating={avgRating} />
+
             <span
               className="text-sm font-semibold tabular-nums"
               style={{ color: "var(--color-primary)" }}
             >
               {avgRating.toFixed(1)}
             </span>
+
             <span className="text-xs text-neutral-400">
               · {totalReviews}+ reviews
             </span>
@@ -248,7 +253,7 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
                 review={review}
                 index={index}
                 from={MOBILE_SLOTS[index].from}
-                progress={mobileProgress}
+                isInView={isInView}
                 horizontalOnly={true}
                 horizontalDistance={90}
                 featured={index === 0}
@@ -257,14 +262,14 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
           ))}
         </div>
 
-        <div className="relative z-0 hidden grid-cols-2 justify-items-center gap-5 md:grid lg:hidden">
+        <div className="relative z-0 hidden grid-cols-2 gap-5 gap-x-0 md:grid lg:hidden">
           {tabletReviews.map((review, index) => (
             <div key={review.id} className="flex w-full justify-center">
               <AnimatedGridCard
                 review={review}
                 index={index}
                 from={TABLET_SLOTS[index].from}
-                progress={tabletProgress}
+                isInView={isInView}
                 horizontalOnly={true}
                 horizontalDistance={110}
                 featured={index === 0}
@@ -280,7 +285,7 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
                 review={review}
                 index={index}
                 from={DESKTOP_SLOTS[index].from}
-                progress={desktopProgress}
+                isInView={isInView}
                 featured={index === 0}
               />
             </div>
@@ -298,6 +303,7 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
             }}
           >
             Read all reviews
+
             <svg
               className="h-3.5 w-3.5"
               fill="none"

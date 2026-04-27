@@ -1,6 +1,6 @@
 "use client";
 
-import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaGoogle } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
 
 type FooterProps = {
@@ -9,6 +9,7 @@ type FooterProps = {
   logoUrl: string | null;
   facebookUrl: string;
   instagramUrl: string;
+  googleUrl: string;
 };
 
 const Footer = ({
@@ -17,16 +18,16 @@ const Footer = ({
   logoUrl,
   facebookUrl,
   instagramUrl,
+  googleUrl,
 }: FooterProps) => {
   const logoSrc = logoUrl || "/salt-creek-logo.png";
 
   return (
-    <footer className="bg-white mt-10">
+    <footer className="mt-10 bg-white text-text">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row md:items-start">
-          
           {/* Logo + Branding */}
-          <div className="flex flex-col items-center md:items-start gap-4">
+          <div className="flex flex-col items-center gap-4 md:items-start">
             <a href="/">
               <img
                 src={logoSrc}
@@ -35,31 +36,29 @@ const Footer = ({
               />
             </a>
 
-            <p className="max-w-sm text-sm text-gray-600 text-center md:text-left">
+            <p className="max-w-sm text-center text-sm text-text md:text-left">
               {tagline || ""}
             </p>
           </div>
 
           {/* Navigation */}
           <div className="flex flex-wrap justify-center gap-6 text-sm md:justify-start">
-            <a href="/" className="text-gray-600 hover:text-black transition">
-              Home
-            </a>
-            <a href="/services" className="text-gray-600 hover:text-black transition">
-              Services
-            </a>
-            <a href="/gallery" className="text-gray-600 hover:text-black transition">
-              Gallery
-            </a>
-            <a href="/contact" className="text-gray-600 hover:text-black transition">
-              Contact
-            </a>
-              <a href="/faqs" className="text-gray-600 hover:text-black transition">
-              FAQs
-            </a>
-            <a href="/reviews" className="text-gray-600 hover:text-black transition">
-              Reviews
-            </a>
+            {[
+              ["Home", "/"],
+              ["Services", "/services"],
+              ["Gallery", "/gallery"],
+              ["Contact", "/contact"],
+              ["FAQs", "/faqs"],
+              ["Reviews", "/reviews"],
+            ].map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                className="text-text transition-colors duration-200 hover:text-primary"
+              >
+                {label}
+              </a>
+            ))}
           </div>
 
           {/* Socials */}
@@ -69,7 +68,8 @@ const Footer = ({
                 href={facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-black transition"
+                aria-label="Facebook"
+                className="text-primary transition-colors duration-200 hover:text-primary/65"
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
@@ -80,20 +80,33 @@ const Footer = ({
                 href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-black transition"
+                aria-label="Instagram"
+                className="text-primary transition-colors duration-200 hover:text-primary/65"
               >
                 <FaInstagram className="h-5 w-5" />
+              </a>
+            )}
+
+            {googleUrl && (
+              <a
+                href={googleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Business"
+                className="text-primary transition-colors duration-200 hover:text-primary/65"
+              >
+                <FaGoogle className="h-5 w-5" />
               </a>
             )}
           </div>
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-primary/10" />
 
       {/* Bottom */}
       <div className="mx-auto max-w-7xl px-6 py-6">
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm text-text">
           © {new Date().getFullYear()} {businessName}. All rights reserved.
         </p>
       </div>

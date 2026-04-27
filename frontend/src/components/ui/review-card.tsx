@@ -36,9 +36,8 @@ function formatDate(date: string | null) {
   const d = new Date(date);
 
   return d.toLocaleDateString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "2-digit",
+    month: "short",
+    year: "numeric",
   });
 }
 
@@ -80,37 +79,39 @@ export function ReviewCard({ data, featured = false }: ReviewCardProps) {
 
           <div className="min-w-0">
             {/* Name + Date inline (fixed alignment) */}
-            <div className="flex items-center gap-2">
-              <h3
-                className={[
-                  "truncate font-semibold text-primary leading-tight",
-                  featured ? "text-[1.05rem]" : "text-base",
-                ].join(" ")}
-              >
-                {data.name}
-              </h3>
+<div>
+  <h3
+    className={[
+      "truncate font-semibold text-primary leading-tight",
+      featured ? "text-[1.05rem]" : "text-base",
+    ].join(" ")}
+  >
+    {data.name}
+  </h3>
 
-              {formattedDate && (
-                <span className="text-xs text-text/40 leading-tight">
-                  • {formattedDate}
-                </span>
-              )}
-            </div>
+  <div className="mt-1 flex items-center justify-between gap-3">
+    <Stars rating={data.rating} />
 
-            <div className="mt-1">
-              <Stars rating={data.rating} />
-            </div>
+    {formattedDate && (
+      <span className="text-[0.7rem] leading-none tracking-wide text-text/35">
+        {formattedDate}
+      </span>
+    )}
+  </div>
+</div>
           </div>
         </div>
 
-        <p
-          className={[
-            "text-left leading-7 text-text/80",
-            featured ? "text-[0.98rem]" : "text-sm",
-          ].join(" ")}
-        >
-          “{data.context}”
-        </p>
+        {data.context && (
+          <p
+            className={[
+              "text-left leading-7 text-text/80",
+              featured ? "text-[0.98rem]" : "text-sm",
+            ].join(" ")}
+          >
+            “{data.context}”
+          </p>
+        )}
       </div>
     </article>
   );

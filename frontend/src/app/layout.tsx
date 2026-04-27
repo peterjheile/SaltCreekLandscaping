@@ -9,6 +9,7 @@ import { getSiteSettings } from "@/features/core/api";
 import { SiteSettingsProvider } from "@/features/core/providers";
 import { QuoteRequestModalProvider } from "@/features/quote-request/QuoteRequestModalProvider";
 import { getServiceCategories } from "@/features/services/api";
+import { ServiceProvider } from "@/features/services/ServiceProvider";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -60,7 +61,8 @@ export default async function RootLayout({
       className={`${cinzel.variable} ${montserrat.variable} ${inter.variable} ${geist.variable}`}
     >
       <SiteSettingsProvider value={siteSettings}>
-        <QuoteRequestModalProvider serviceCategories={serviceCategories}>
+        <ServiceProvider serviceCategories={serviceCategories}>
+        <QuoteRequestModalProvider>
         <body className="overflow-x-hidden text-text" style={themeVars}>
           
             <Navbar
@@ -76,10 +78,12 @@ export default async function RootLayout({
               logoUrl={siteSettings.logoUrl}
               facebookUrl={siteSettings.facebookUrl}
               instagramUrl={siteSettings.instagramUrl}
+              googleUrl={siteSettings.googleBusinessUrl}
             />
           
         </body>
         </QuoteRequestModalProvider>
+        </ServiceProvider>
       </SiteSettingsProvider>
     </html>
   );

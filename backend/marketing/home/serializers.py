@@ -5,6 +5,7 @@ from .models import HomePageHeroContent, AboutModule
 
 class HomePageHeroContentSerializer(serializers.ModelSerializer):
     video_url = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
     expect_items = serializers.SerializerMethodField()
 
     class Meta:
@@ -17,6 +18,7 @@ class HomePageHeroContentSerializer(serializers.ModelSerializer):
             "title",
             "subtitle",
             "expect_items",
+            "image_url",
             "video_url",
             "is_active",
             "sort_order",
@@ -30,6 +32,18 @@ class HomePageHeroContentSerializer(serializers.ModelSerializer):
 
         request = self.context.get("request")
         url = obj.hero_video.url
+
+        if request is not None:
+            return request.build_absolute_uri(url)
+
+        return url
+
+    def get_image_url(self, obj):
+        if not obj.hero_image:
+            return None
+
+        request = self.context.get("request")
+        url = obj.hero_image.url
 
         if request is not None:
             return request.build_absolute_uri(url)

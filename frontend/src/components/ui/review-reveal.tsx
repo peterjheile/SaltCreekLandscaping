@@ -154,16 +154,14 @@ export function ReviewReveal({ reviews }: ReviewRevealProps) {
     [reviews]
   );
 
-  const homepageReviewCount = homepageReviews.length;
 
   const avgRating = useMemo(() => {
-    if (homepageReviewCount === 0) return 0;
+    if (totalReviews === 0) return 0;
 
     return (
-      homepageReviews.reduce((sum, review) => sum + review.rating, 0) /
-      homepageReviewCount
+      reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
     );
-  }, [homepageReviews, homepageReviewCount]);
+  }, [reviews, totalReviews]);
 
   const mobileReviews = homepageReviews.slice(0, MOBILE_SLOTS.length);
   const tabletReviews = homepageReviews.slice(0, TABLET_SLOTS.length);

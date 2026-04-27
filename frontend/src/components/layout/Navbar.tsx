@@ -102,7 +102,7 @@ export default function NavbarDemo({
               <NavbarButton
                 onClick={() => openQuoteRequestModal()}
                 variant="primary"
-                className={`w-full ${buttonStyles} bg-secondary`}
+                className={`w-full ${buttonStyles}`}
               >
                 Book a Quote
               </NavbarButton>

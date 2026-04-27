@@ -16,6 +16,11 @@ const PANEL_GRADIENTS = [
   `linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 14%, white), color-mix(in srgb, var(--color-secondary) 12%, white))`,
 ];
 
+const TEXT_REVEAL_TRANSITION = {
+  duration: 0.3,
+  ease: "easeOut" as const,
+};
+
 export const StickyScroll = ({
   content,
   contentClassName,
@@ -44,9 +49,7 @@ export const StickyScroll = ({
         if (!el) return;
 
         const rect = el.getBoundingClientRect();
-        if (rect.top <= triggerLine) {
-          current = index;
-        }
+        if (rect.top <= triggerLine) current = index;
       });
 
       setActiveCard(current);
@@ -66,123 +69,136 @@ export const StickyScroll = ({
     setPanelGradient(PANEL_GRADIENTS[activeCard % PANEL_GRADIENTS.length]);
   }, [activeCard]);
 
-  if (!content.length) {
-    return null;
-  }
+  if (!content.length) return null;
 
   const activeItem = content[activeCard] ?? content[0];
 
   return (
     <section className="relative w-full bg-white px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-[84rem]">
-        <div className="mb-16 md:text-center lg:text-left">
-          <p
-            className="mb-3 text-xs font-semibold uppercase tracking-[0.26em]"
-            style={{ color: "var(--color-secondary)" }}
-          >
-            About Us
-          </p>
+        {/* HEADER */}
+        <div className="mb-20 md:flex md:flex-col md:items-center lg:block">
+          <div className="w-full md:max-w-2xl lg:max-w-none">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.34em] text-highlight">
+              About Us
+            </p>
 
-          <h2
-            className="text-4xl font-bold leading-tight tracking-tight md:text-5xl"
-            style={{ color: "var(--color-primary)" }}
-          >
-            Why Salt Creek?
-          </h2>
+            <h2
+              className="text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl"
+              style={{ color: "var(--color-primary)" }}
+            >
+              Why{" "}
+              <span className="relative inline-block">
+                Salt Creek
+                <span
+                  className="absolute -bottom-2 left-0 h-1.5 w-full rounded-full blur-[0.2px]"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, var(--color-highlight) 0%, color-mix(in srgb, var(--color-highlight) 88%, transparent) 58%, color-mix(in srgb, var(--color-highlight) 62%, transparent) 82%, color-mix(in srgb, var(--color-highlight) 28%, transparent) 100%)",
+                  }}
+                />
+              </span>
+              ?
+            </h2>
+          </div>
         </div>
 
         <div className="flex gap-16 lg:gap-20">
+          {/* LEFT CONTENT */}
           <div className="min-w-0 flex-[1.15] lg:pt-16">
-            {content.map((item, index) => (
-              <div
-                key={`${item.title}-${index}`}
-                ref={itemRefs[index]}
-                className={cn(
-                  "transition-opacity duration-500 md:flex md:flex-col md:items-center lg:block",
-                  "lg:min-h-[18rem]",
-                  index !== 0 && "mt-14 lg:mt-28",
-                  index !== content.length - 1 && "mb-14 lg:mb-28"
-                )}
-              >
-                <div className="w-full md:max-w-2xl lg:max-w-none">
-                  <motion.p
-                    animate={{
-                      opacity: activeCard === index ? 1 : 0.3,
-                      x: activeCard === index ? 0 : -6,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="mb-3 text-sm font-semibold tabular-nums"
-                    style={{ color: "var(--color-secondary)" }}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </motion.p>
+            {content.map((item, index) => {
+              const isActive = activeCard === index;
 
-                  <motion.h3
-                    animate={{
-                      opacity: activeCard === index ? 1 : 0.28,
-                      x: activeCard === index ? 0 : -4,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="text-2xl font-bold leading-snug tracking-tight md:text-3xl"
-                    style={{ color: "var(--color-primary)" }}
-                  >
-                    {item.title}
-                  </motion.h3>
+              const revealAnimation = {
+                opacity: isActive ? 1 : 0.28,
+                x: isActive ? 0 : -10,
+              };
 
-                  <motion.p
-                    animate={{ opacity: activeCard === index ? 1 : 0.3 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-5 max-w-2xl text-base leading-8 text-neutral-600 md:text-lg"
-                  >
-                    {item.description}
-                  </motion.p>
-
-                  {item.ctaText && item.ctaLink && (
-                    <motion.a
-                      href={item.ctaLink}
-                      animate={{ opacity: activeCard === index ? 1 : 0.3 }}
-                      transition={{ duration: 0.25 }}
-                      className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
-                      style={{ background: "var(--color-primary)" }}
+              return (
+                <div
+                  key={`${item.title}-${index}`}
+                  ref={itemRefs[index]}
+                  className={cn(
+                    "transition-opacity duration-500 md:flex md:flex-col md:items-center lg:block",
+                    "lg:min-h-[21rem]",
+                    index !== 0 && "mt-16 lg:mt-32",
+                    index !== content.length - 1 && "mb-16 lg:mb-32"
+                  )}
+                >
+                  <div className="w-full md:max-w-2xl lg:max-w-none">
+                    <motion.p
+                      animate={revealAnimation}
+                      transition={TEXT_REVEAL_TRANSITION}
+                      className="mb-3 text-sm font-semibold tabular-nums text-highlight"
                     >
-                      {item.ctaText}
+                      {String(index + 1).padStart(2, "0")}
+                    </motion.p>
 
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
+                    <motion.h3
+                      animate={revealAnimation}
+                      transition={TEXT_REVEAL_TRANSITION}
+                      className="text-2xl font-bold leading-snug tracking-tight md:text-3xl"
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      {item.title}
+                    </motion.h3>
+
+                    <motion.p
+                      animate={revealAnimation}
+                      transition={TEXT_REVEAL_TRANSITION}
+                      className="mt-5 max-w-2xl text-base leading-8 text-neutral-600 md:text-lg"
+                    >
+                      {item.description}
+                    </motion.p>
+
+                    {item.ctaText && item.ctaLink && (
+                      <motion.a
+                        href={item.ctaLink}
+                        animate={revealAnimation}
+                        transition={TEXT_REVEAL_TRANSITION}
+                        className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+                        style={{ background: "var(--color-primary)" }}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        {item.ctaText}
+
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
+                        </svg>
+                      </motion.a>
+                    )}
+                  </div>
+
+                  {item.image && (
+                    <div className="mt-6 w-full md:mt-8 md:max-w-2xl lg:hidden">
+                      <div className="overflow-hidden rounded-2xl">
+                        <img
+                          src={item.image}
+                          alt={item.imageAlt || item.title}
+                          className="h-[20rem] w-full object-cover sm:h-[22rem] md:h-[24rem]"
                         />
-                      </svg>
-                    </motion.a>
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {item.image && (
-                  <div className="mt-6 w-full md:mt-8 md:max-w-2xl lg:hidden">
-                    <div className="overflow-hidden rounded-2xl">
-                      <img
-                        src={item.image}
-                        alt={item.imageAlt || item.title}
-                        className="h-[20rem] w-full object-cover sm:h-[22rem] md:h-[24rem]"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
 
             <div className="h-24" />
           </div>
 
-          <div className="relative hidden w-[clamp(28rem,38vw,42rem)] shrink-0 lg:block">
+          {/* RIGHT IMAGE PANEL */}
+          <div className="relative hidden -mt-8 w-[clamp(28rem,38vw,42rem)] shrink-0 lg:block">
             <div className="sticky top-[calc(50vh-18rem)]">
               <motion.div
                 animate={{ background: panelGradient }}
@@ -192,16 +208,6 @@ export const StickyScroll = ({
                   contentClassName
                 )}
               >
-                <div
-                  className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full opacity-20 blur-3xl"
-                  style={{ background: "var(--color-primary)" }}
-                />
-
-                <div
-                  className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full opacity-15 blur-3xl"
-                  style={{ background: "var(--color-secondary)" }}
-                />
-
                 <AnimatePresence mode="wait">
                   {activeItem.image ? (
                     <motion.img
@@ -215,16 +221,9 @@ export const StickyScroll = ({
                       className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (
-                    <motion.div
-                      key={activeItem.title}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.35 }}
-                      className="flex h-full items-center justify-center p-12"
-                    >
+                    <motion.div className="flex h-full items-center justify-center p-12">
                       <p
-                        className="text-center text-4xl font-bold leading-tight tracking-tight"
+                        className="text-center text-4xl font-bold"
                         style={{ color: "var(--color-primary)" }}
                       >
                         {activeItem.title}
@@ -233,6 +232,7 @@ export const StickyScroll = ({
                   )}
                 </AnimatePresence>
 
+                {/* DOTS */}
                 <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
                   {content.map((_, i) => (
                     <motion.div

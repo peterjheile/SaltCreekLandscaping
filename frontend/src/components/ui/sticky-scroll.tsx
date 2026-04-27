@@ -75,7 +75,7 @@ export const StickyScroll = ({
 
   return (
     <section className="relative w-full bg-white px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-[84rem]">
+      <div className="mx-auto max-w-7xl">
         {/* HEADER */}
         <div className="mb-20 md:flex md:flex-col md:items-center lg:block">
           <div className="w-full md:max-w-2xl lg:max-w-none">

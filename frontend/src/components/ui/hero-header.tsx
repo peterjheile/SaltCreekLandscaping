@@ -86,7 +86,7 @@ export default function HeroHeader({
       className="relative overflow-hidden font-inter"
     >
       <div
-        className={`relative z-10 mx-auto max-w-7xl px-6 pb-18 pt-20 sm:px-8 sm:pt-24 lg:px-12 lg:pb-24 lg:pt-28 ${
+        className={`relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28 ${
           hasVideo ? "" : "max-w-5xl"
         }`}
       >

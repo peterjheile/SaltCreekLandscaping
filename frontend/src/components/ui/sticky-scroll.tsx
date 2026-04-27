@@ -82,6 +82,7 @@ export const StickyScroll = ({
           >
             About Us
           </p>
+
           <h2
             className="text-4xl font-bold leading-tight tracking-tight md:text-5xl"
             style={{ color: "var(--color-primary)" }}
@@ -98,9 +99,9 @@ export const StickyScroll = ({
                 ref={itemRefs[index]}
                 className={cn(
                   "transition-opacity duration-500 md:flex md:flex-col md:items-center lg:block",
-                  "lg:min-h-[26rem]",
-                  index !== 0 && "mt-16 lg:mt-40",
-                  index !== content.length - 1 && "mb-16 lg:mb-40"
+                  "lg:min-h-[18rem]",
+                  index !== 0 && "mt-14 lg:mt-28",
+                  index !== content.length - 1 && "mb-14 lg:mb-28"
                 )}
               >
                 <div className="w-full md:max-w-2xl lg:max-w-none">
@@ -145,6 +146,7 @@ export const StickyScroll = ({
                       style={{ background: "var(--color-primary)" }}
                     >
                       {item.ctaText}
+
                       <svg
                         className="h-4 w-4"
                         fill="none"
@@ -180,13 +182,13 @@ export const StickyScroll = ({
             <div className="h-24" />
           </div>
 
-          <div className="relative hidden w-[42rem] shrink-0 lg:block">
+          <div className="relative hidden w-[clamp(28rem,38vw,42rem)] shrink-0 lg:block">
             <div className="sticky top-[calc(50vh-18rem)]">
               <motion.div
                 animate={{ background: panelGradient }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className={cn(
-                  "relative h-[36rem] overflow-hidden rounded-[2rem] shadow-[0_24px_80px_rgba(0,0,0,0.10)]",
+                  "relative h-[clamp(24rem,34vw,36rem)] overflow-hidden rounded-[2rem] shadow-[0_24px_80px_rgba(0,0,0,0.10)]",
                   contentClassName
                 )}
               >
@@ -194,6 +196,7 @@ export const StickyScroll = ({
                   className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full opacity-20 blur-3xl"
                   style={{ background: "var(--color-primary)" }}
                 />
+
                 <div
                   className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full opacity-15 blur-3xl"
                   style={{ background: "var(--color-secondary)" }}
@@ -208,7 +211,7 @@ export const StickyScroll = ({
                       initial={{ opacity: 0, scale: 1.03 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.45, ease: "easeInOut" }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
                       className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (
@@ -230,17 +233,18 @@ export const StickyScroll = ({
                   )}
                 </AnimatePresence>
 
-                <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
+                <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
                   {content.map((_, i) => (
                     <motion.div
                       key={i}
                       animate={{
-                        width: activeCard === i ? 24 : 8,
-                        opacity: activeCard === i ? 1 : 0.35,
+                        width: activeCard === i ? 18 : 6,
                       }}
                       transition={{ duration: 0.3 }}
-                      className="h-2 rounded-full"
-                      style={{ background: "var(--color-primary)" }}
+                      className={cn(
+                        "h-1.5 rounded-full",
+                        activeCard === i ? "bg-primary" : "bg-primary/30"
+                      )}
                     />
                   ))}
                 </div>

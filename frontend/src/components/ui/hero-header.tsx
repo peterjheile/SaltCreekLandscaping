@@ -21,7 +21,6 @@ type HeroHeaderProps = {
   heroContent: HomePageHeroContent;
 };
 
-
 function BookServiceButton() {
   const { openQuoteRequestModal } = useQuoteRequestModal();
 
@@ -44,27 +43,37 @@ function BookServiceButton() {
   );
 }
 
-
-
-
-
-
-export default function HeroHeader({
-  heroContent,
-}: HeroHeaderProps) {
+export default function HeroHeader({ heroContent }: HeroHeaderProps) {
   const siteSettings = useSiteSettings();
 
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
   const hasVideo = Boolean(heroContent.videoUrl);
   const phone = siteSettings.phone || "+10000000000";
 
-  
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!heroContent.imageUrl) {
+      setHeroImageLoaded(false);
+      return;
+    }
+
+    const img = new Image();
+    img.src = heroContent.imageUrl;
+
+    img.onload = () => {
+      setHeroImageLoaded(true);
+    };
+
+    img.onerror = () => {
+      setHeroImageLoaded(false);
+    };
+  }, [heroContent.imageUrl]);
 
   useEffect(() => {
     if (!isVideoOpen) return;
@@ -85,6 +94,28 @@ export default function HeroHeader({
       aria-label="Hero — Salt Creek Landscaping"
       className="relative overflow-hidden font-inter"
     >
+      {heroContent.imageUrl && heroImageLoaded ? (
+        <>
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700"
+            style={{ backgroundImage: `url('${heroContent.imageUrl}')` }}
+          />
+          <div className="absolute inset-0 bg-black/45" />
+        </>
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(circle at top left,
+              color-mix(in srgb, var(--color-primary) 88%, black),
+              var(--color-primary) 45%,
+              black 100%)
+            `,
+          }}
+        />
+      )}
+
       <div
         className={`relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28 ${
           hasVideo ? "" : "max-w-5xl"
@@ -133,7 +164,6 @@ export default function HeroHeader({
               transition={{ duration: 0.55, delay: 0.16 }}
               className="mt-9 flex flex-col gap-3 sm:flex-row"
             >
-              
               <BookServiceButton />
 
               <a
@@ -309,7 +339,8 @@ export default function HeroHeader({
       </div>
 
       {/* Modal */}
-      {isMounted && hasVideo &&
+      {isMounted &&
+        hasVideo &&
         createPortal(
           <AnimatePresence>
             {isVideoOpen && (

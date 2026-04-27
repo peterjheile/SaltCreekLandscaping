@@ -141,13 +141,15 @@ export default function QuoteRequestModal({
         >
           <div className="flex h-full items-center justify-center px-4 py-8 sm:px-8">
             <motion.div
+              layout
               initial={{ opacity: 0, y: 20, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.985 }}
               transition={{ duration: 0.22 }}
               className="relative w-full max-w-3xl overflow-hidden rounded-[2rem] border bg-white shadow-[0_30px_120px_rgba(0,0,0,0.30)]"
               style={{
-                borderColor: "color-mix(in srgb, var(--color-primary) 10%, white)",
+                borderColor:
+                  "color-mix(in srgb, var(--color-primary) 10%, white)",
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -259,7 +261,8 @@ export default function QuoteRequestModal({
                               htmlFor="quote-email"
                               className="text-xs font-semibold uppercase tracking-wider text-primary"
                             >
-                              Email address <span className="text-red-400">*</span>
+                              Email address{" "}
+                              <span className="text-red-400">*</span>
                             </label>
 
                             <input
@@ -308,10 +311,10 @@ export default function QuoteRequestModal({
                             />
                           </div>
 
-                          <div className="flex flex-col gap-1.5">
+                          <div className="flex flex-col">
                             <label
                               htmlFor="quote-service-category"
-                              className="text-xs font-semibold uppercase tracking-wider text-primary"
+                              className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-primary"
                             >
                               Service category
                             </label>
@@ -353,23 +356,38 @@ export default function QuoteRequestModal({
                               ) : null}
                             </div>
 
-                            <AnimatePresence>
+                            <AnimatePresence initial={false}>
                               {showIncludedItems &&
                               selectedCategory?.includedItems?.length ? (
                                 <motion.div
-                                  initial={{ opacity: 0, y: -6 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -6 }}
-                                  className="mt-2 rounded-xl border border-primary/10 bg-primary/5 p-4"
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{
+                                    height: {
+                                      duration: 0.36,
+                                      ease: [0.22, 1, 0.36, 1],
+                                    },
+                                    opacity: {
+                                      duration: 0.18,
+                                      ease: "easeOut",
+                                    },
+                                  }}
+                                  className="overflow-hidden"
                                 >
-                                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary">
-                                    May Include
-                                  </p>
-                                  <ul className="space-y-1 text-sm text-text/80">
-                                    {selectedCategory.includedItems.map((item) => (
-                                      <li key={item.id}>• {item.name}</li>
-                                    ))}
-                                  </ul>
+                                  <div className="mt-2 rounded-xl border border-primary/10 bg-primary/5 p-4">
+                                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary">
+                                      May Include
+                                    </p>
+
+                                    <ul className="space-y-1 text-sm text-text/80">
+                                      {selectedCategory.includedItems.map(
+                                        (item) => (
+                                          <li key={item.id}>• {item.name}</li>
+                                        )
+                                      )}
+                                    </ul>
+                                  </div>
                                 </motion.div>
                               ) : null}
                             </AnimatePresence>
@@ -377,7 +395,9 @@ export default function QuoteRequestModal({
                         </div>
 
                         <div className="hidden" aria-hidden="true">
-                          <label htmlFor="quote-hp">Leave this field empty</label>
+                          <label htmlFor="quote-hp">
+                            Leave this field empty
+                          </label>
                           <input
                             id="quote-hp"
                             name="hp"
@@ -394,7 +414,8 @@ export default function QuoteRequestModal({
                             htmlFor="quote-message"
                             className="text-xs font-semibold uppercase tracking-wider text-primary"
                           >
-                            Project details <span className="text-red-400">*</span>
+                            Project details{" "}
+                            <span className="text-red-400">*</span>
                           </label>
 
                           <textarea
@@ -415,14 +436,16 @@ export default function QuoteRequestModal({
                         </div>
 
                         {formState === "error" && errorMessage ? (
-                          <p className="text-sm text-red-500">{errorMessage}</p>
+                          <p className="text-sm text-red-500">
+                            {errorMessage}
+                          </p>
                         ) : null}
 
                         <div className="mt-2 flex flex-wrap items-center gap-3">
                           <button
                             type="submit"
                             disabled={formState === "submitting"}
-                            className="flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-text-inverse transition hover:opacity-80 hover:cursor-pointer disabled:opacity-60"
+                            className="flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-text-inverse transition hover:cursor-pointer hover:opacity-80 disabled:opacity-60"
                           >
                             {formState === "submitting" ? (
                               <>
@@ -455,7 +478,7 @@ export default function QuoteRequestModal({
                           <button
                             type="button"
                             onClick={handleClose}
-                            className="rounded-full border border-primary/20 bg-white px-8 py-3.5 text-sm font-semibold text-primary transition hover:bg-primary/5 hover:cursor-pointer"
+                            className="rounded-full border border-primary/20 bg-white px-8 py-3.5 text-sm font-semibold text-primary transition hover:cursor-pointer hover:bg-primary/5"
                           >
                             Cancel
                           </button>

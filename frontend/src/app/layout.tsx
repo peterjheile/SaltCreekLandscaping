@@ -78,6 +78,7 @@ export default async function RootLayout({
               logoUrl={siteSettings.logoUrl}
               facebookUrl={siteSettings.facebookUrl}
               instagramUrl={siteSettings.instagramUrl}
+              googleUrl={siteSettings.googleBusinessUrl}
             />
           
         </body>

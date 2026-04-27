@@ -71,7 +71,7 @@ export default function NavbarDemo({
           <Logo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="primary" className={buttonStyles} onClick={() => openQuoteRequestModal()}>
+            <NavbarButton variant="primary" className={`${buttonStyles}`} onClick={() => openQuoteRequestModal()}>
               Book Quote
             </NavbarButton>
           </div>
@@ -102,7 +102,7 @@ export default function NavbarDemo({
               <NavbarButton
                 onClick={() => openQuoteRequestModal()}
                 variant="primary"
-                className={`w-full ${buttonStyles}`}
+                className={`w-full ${buttonStyles} bg-secondary`}
               >
                 Book a Quote
               </NavbarButton>

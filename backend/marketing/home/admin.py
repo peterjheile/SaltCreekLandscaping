@@ -12,6 +12,7 @@ class HomePageHeroContentAdmin(ModelAdmin):
         "is_active",
         "sort_order",
         "title",
+        "has_image",
         "has_video",
         "updated_at",
     )
@@ -20,7 +21,13 @@ class HomePageHeroContentAdmin(ModelAdmin):
     search_fields = ("name", "slug", "eyebrow", "title", "subtitle")
     list_filter = ("is_active",)
     ordering = ("sort_order", "name")
-    readonly_fields = ("slug", "created_at", "updated_at", "video_preview")
+    readonly_fields = (
+        "slug",
+        "created_at",
+        "updated_at",
+        "image_preview",
+        "video_preview",
+    )
 
     fieldsets = (
         (
@@ -59,6 +66,8 @@ class HomePageHeroContentAdmin(ModelAdmin):
             "Media",
             {
                 "fields": (
+                    "hero_image",
+                    "image_preview",
                     "hero_video",
                     "video_preview",
                 )
@@ -75,11 +84,28 @@ class HomePageHeroContentAdmin(ModelAdmin):
         ),
     )
 
+    def has_image(self, obj):
+        return bool(obj.hero_image)
+
+    has_image.boolean = True
+    has_image.short_description = "Image"
+
     def has_video(self, obj):
         return bool(obj.hero_video)
 
     has_video.boolean = True
     has_video.short_description = "Video"
+
+    def image_preview(self, obj):
+        if not obj.hero_image:
+            return "No image uploaded."
+
+        return format_html(
+            '<img src="{}" style="max-width: 320px; width: 100%; border-radius: 12px;" />',
+            obj.hero_image.url,
+        )
+
+    image_preview.short_description = "Image Preview"
 
     def video_preview(self, obj):
         if not obj.hero_video:

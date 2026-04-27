@@ -56,6 +56,13 @@ class HomePageHeroContent(models.Model):
     )
 
     # ── Media ──
+    hero_image = models.ImageField(
+        upload_to="home/hero/images/",
+        blank=True,
+        null=True,
+        help_text="Optional hero image shown at the top of the homepage content.",
+    )
+
     hero_video = models.FileField(
         upload_to="home/hero/videos/",
         blank=True,

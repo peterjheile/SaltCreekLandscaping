@@ -94,27 +94,15 @@ export default function HeroHeader({ heroContent }: HeroHeaderProps) {
       aria-label="Hero — Salt Creek Landscaping"
       className="relative overflow-hidden font-inter"
     >
-      {heroContent.imageUrl && heroImageLoaded ? (
-        <>
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700"
-            style={{ backgroundImage: `url('${heroContent.imageUrl}')` }}
-          />
-          <div className="absolute inset-0 bg-black/45" />
-        </>
-      ) : (
+    {heroContent.imageUrl && heroImageLoaded ? (
+      <>
         <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at top left,
-              color-mix(in srgb, var(--color-primary) 88%, black),
-              var(--color-primary) 45%,
-              black 100%)
-            `,
-          }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700"
+          style={{ backgroundImage: `url('${heroContent.imageUrl}')` }}
         />
-      )}
+        <div className="absolute inset-0 bg-black/45" />
+      </>
+    ) : null}
 
       <div
         className={`relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28 ${

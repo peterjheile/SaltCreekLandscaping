@@ -198,7 +198,7 @@ export const StickyScroll = ({
           </div>
 
           {/* RIGHT IMAGE PANEL */}
-          <div className="relative hidden -mt-8 w-[clamp(28rem,38vw,42rem)] shrink-0 lg:block">
+          <div className="relative hidden lg:block w-[clamp(28rem,38vw,42rem)] shrink-0 lg:mt-16">
             <div className="sticky top-[calc(50vh-18rem)]">
               <motion.div
                 animate={{ background: panelGradient }}

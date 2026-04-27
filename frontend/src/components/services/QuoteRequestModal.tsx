@@ -6,23 +6,22 @@ import { AnimatePresence, motion } from "motion/react";
 import { CheckCircle, Info, X } from "lucide-react";
 
 import { submitQuoteRequest } from "@/features/messaging/api";
-import type { ServiceCategory } from "@/features/services/types";
+import { useServiceCategories } from "@/features/services/useServiceCategories";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
 type QuoteRequestModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  serviceCategories: ServiceCategory[];
   initialServiceCategoryId?: string;
 };
 
 export default function QuoteRequestModal({
   isOpen,
   onClose,
-  serviceCategories,
   initialServiceCategoryId,
 }: QuoteRequestModalProps) {
+  const serviceCategories = useServiceCategories();
   const [isMounted, setIsMounted] = useState(false);
 
   const [name, setName] = useState("");

@@ -9,7 +9,6 @@ import {
 } from "react";
 
 import QuoteRequestModal from "@/components/services/QuoteRequestModal";
-import type { ServiceCategory } from "@/features/services/types";
 
 type QuoteRequestModalContextValue = {
   openQuoteRequestModal: (serviceCategoryId?: string) => void;
@@ -21,12 +20,10 @@ const QuoteRequestModalContext =
 
 type QuoteRequestModalProviderProps = {
   children: React.ReactNode;
-  serviceCategories: ServiceCategory[];
 };
 
 export function QuoteRequestModalProvider({
   children,
-  serviceCategories,
 }: QuoteRequestModalProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [initialServiceCategoryId, setInitialServiceCategoryId] = useState<
@@ -57,7 +54,6 @@ export function QuoteRequestModalProvider({
       <QuoteRequestModal
         isOpen={isOpen}
         onClose={closeQuoteRequestModal}
-        serviceCategories={serviceCategories}
         initialServiceCategoryId={initialServiceCategoryId}
       />
     </QuoteRequestModalContext.Provider>

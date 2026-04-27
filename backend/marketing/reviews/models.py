@@ -108,7 +108,7 @@ class ReviewsPageContent(models.Model):
 
 class ReviewCard(models.Model):
     name = models.CharField(max_length=255)
-    review = models.TextField()
+    review = models.TextField(blank=True, null=True)
 
     profile_image = models.ImageField(
         upload_to="review_cards/",

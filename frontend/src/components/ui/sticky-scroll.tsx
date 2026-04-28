@@ -233,7 +233,7 @@ export const StickyScroll = ({
                 </AnimatePresence>
 
                 {/* DOTS */}
-                <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-white px-2.5 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
+                <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-primary/70 px-2.5 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
                   {content.map((_, i) => (
                     <motion.div
                       key={i}
@@ -243,7 +243,7 @@ export const StickyScroll = ({
                       transition={{ duration: 0.3 }}
                       className={cn(
                         "h-1.5 rounded-full",
-                        activeCard === i ? "bg-primary" : "bg-primary/30"
+                        activeCard === i ? "bg-white" : "bg-white/50"
                       )}
                     />
                   ))}

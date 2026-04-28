@@ -128,24 +128,32 @@ class ServiceCategoryAdmin(ModelAdmin):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields["icon_name"].help_text = """
             Available icons:<br><br>
-            • <strong>scissors</strong> – Cutting / trimming<br>
-            • <strong>wind</strong> – Blowing / cleanup<br>
-            • <strong>droplet</strong> – Irrigation / water<br>
-            • <strong>layers</strong> – Mulch / layering<br>
-            • <strong>home</strong> – Residential<br>
-            • <strong>trash</strong> – Junk / debris removal<br>
-            • <strong>tool</strong> – General service<br>
-            • <strong>sun</strong> – Outdoor / summer<br>
-            • <strong>cloud</strong> – General weather<br>
+            • <strong>mowing</strong> – Mowing / lawn cutting<br>
+            • <strong>grass</strong> – Grass / lawn care<br>
+            • <strong>tree</strong> – Trees / tree work<br>
+            • <strong>rock</strong> – Rock beds / hardscaping<br>
+            • <strong>mulch</strong> – Mulch / bed refresh<br>
+            • <strong>cleanup</strong> – Yard cleanup<br>
+            • <strong>trash</strong> – Debris removal<br>
+            • <strong>hauling</strong> – Hauling / transport<br>
+            • <strong>watering</strong> – Watering / irrigation<br>
+            • <strong>sprinkler</strong> – Sprinklers / water systems<br>
+            • <strong>trimming</strong> – Trimming / edging<br>
+            • <strong>hedge</strong> – Hedges / shrubs<br>
+            • <strong>snow</strong> – Snow removal<br>
+            • <strong>sun</strong> – Summer / outdoor care<br>
+            • <strong>wind</strong> – Blowing / leaf cleanup<br>
+            • <strong>storm</strong> – Storm cleanup<br>
             • <strong>rain</strong> – Rain / drainage<br>
-            • <strong>activity</strong> – Maintenance<br>
+            • <strong>lightning</strong> – Storm damage<br>
+            • <strong>home</strong> – Residential service<br>
+            • <strong>tools</strong> – Tools / general work<br>
+            • <strong>patio</strong> – Patio / hardscape layout<br>
             • <strong>check</strong> – Completed / verified<br>
-            • <strong>award</strong> – Premium service<br>
-            • <strong>thumbs</strong> – Recommended<br>
-            • <strong>star</strong> – Featured<br>
-            • <strong>location</strong> – Location-based<br>
-            • <strong>navigation</strong> – Service area<br>
-            • <strong>settings</strong> – Custom work
+            • <strong>premium</strong> – Featured / premium service<br>
+            • <strong>location</strong> – Location-based service<br>
+            • <strong>schedule</strong> – Scheduled service<br>
+            • <strong>design</strong> – Landscape design / layout
         """
         return form
 

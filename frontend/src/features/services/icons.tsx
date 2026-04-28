@@ -1,68 +1,106 @@
 import type { ReactNode } from "react";
+import type { IconType } from "react-icons";
+
 import {
-  FiActivity,
-  FiAward,
-  FiCheckCircle,
-  FiCloud,
-  FiCloudRain,
-  FiDroplet,
-  FiHome,
-  FiLayers,
-  FiMapPin,
-  FiNavigation,
+  FaLeaf,
+  FaTree,
+  FaSnowflake,
+  FaTrashAlt,
+  FaTruckPickup,
+  FaWater,
+  FaBroom,
+  FaMountain,
+  FaBolt,
+  FaCloudSunRain,
+  FaCloudRain,
+} from "react-icons/fa";
+
+import {
   FiScissors,
-  FiSettings,
-  FiStar,
-  FiSun,
-  FiThumbsUp,
   FiTool,
-  FiTrash2,
+  FiHome,
+  FiSun,
   FiWind,
+  FiDroplet,
+  FiCheckCircle,
+  FiStar,
+  FiMapPin,
+  FiClock,
+  FiGrid,
 } from "react-icons/fi";
 
+import { MdGrass } from "react-icons/md";
+
+/**
+ * Curated landscaping / lawncare focused icon set
+ */
+
 export const SERVICE_ICON_NAMES = [
-  "scissors",
-  "wind",
-  "droplet",
-  "layers",
-  "home",
+  "mowing",
+  "grass",
+  "tree",
+  "rock",
+  "mulch",
+  "cleanup",
   "trash",
-  "tool",
+  "hauling",
+  "watering",
+  "sprinkler",
+  "trimming",
+  "hedge",
+  "snow",
   "sun",
-  "cloud",
+  "wind",
+  "storm",
   "rain",
-  "activity",
+  "lightning",
+  "home",
+  "tools",
+  "patio",
   "check",
-  "award",
-  "thumbs",
-  "star",
+  "premium",
   "location",
-  "navigation",
-  "settings",
+  "schedule",
+  "design",
 ] as const;
 
 export type ServiceIconName = (typeof SERVICE_ICON_NAMES)[number];
 
 export const SERVICE_ICON_MAP = {
-  scissors: FiScissors,
-  wind: FiWind,
-  droplet: FiDroplet,
-  layers: FiLayers,
-  home: FiHome,
-  trash: FiTrash2,
-  tool: FiTool,
+  // core requested
+  mowing: FiScissors,
+  grass: MdGrass,
+  tree: FaTree,
+  rock: FaMountain,
+
+  // lawn / landscaping
+  mulch: FaLeaf,
+  cleanup: FaBroom,
+  trash: FaTrashAlt,
+  hauling: FaTruckPickup,
+  watering: FiDroplet,
+  sprinkler: FaWater,
+  trimming: FiScissors,
+  hedge: FaLeaf,
+  patio: FiGrid,
+  design: FiGrid,
+
+  // seasonal / weather services
+  snow: FaSnowflake,
   sun: FiSun,
-  cloud: FiCloud,
-  rain: FiCloudRain,
-  activity: FiActivity,
+  wind: FiWind,
+  storm: FaCloudSunRain,
+  rain: FaCloudRain,
+  lightning: FaBolt,
+
+  // general useful service items
+  home: FiHome,
+  tools: FiTool,
   check: FiCheckCircle,
-  award: FiAward,
-  thumbs: FiThumbsUp,
-  star: FiStar,
+  premium: FiStar,
   location: FiMapPin,
-  navigation: FiNavigation,
-  settings: FiSettings,
-} as const;
+  schedule: FiClock,
+} satisfies Record<ServiceIconName, IconType>;
 
 const FALLBACK_ICON = FiScissors;
 
@@ -87,6 +125,7 @@ export function ServiceIcon({
   className = "h-5 w-5",
 }: ServiceIconProps) {
   const normalizedIconName = normalizeServiceIconName(iconName);
+
   const Icon = normalizedIconName
     ? SERVICE_ICON_MAP[normalizedIconName]
     : FALLBACK_ICON;
@@ -99,6 +138,7 @@ export function getServiceIcon(
   className = "h-5 w-5"
 ): ReactNode {
   const normalizedIconName = normalizeServiceIconName(iconName);
+
   const Icon = normalizedIconName
     ? SERVICE_ICON_MAP[normalizedIconName]
     : FALLBACK_ICON;

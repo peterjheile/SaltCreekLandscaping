@@ -160,7 +160,7 @@ export default function FAQsAll({
       </section>
 
       {/* FAQ Content */}
-      <section className="bg-white">
+      <section className="bg-white overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 pt-16">
           {categories.map((category) => (
             <div key={category.id} className="mb-12">

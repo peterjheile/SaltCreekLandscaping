@@ -145,6 +145,8 @@ class AboutModule(models.Model):
 
     sort_order = models.PositiveIntegerField(default=0)
 
+    is_active = models.BooleanField(default=True)  # 👈 add this
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

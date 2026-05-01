@@ -130,8 +130,7 @@ class AboutModuleAdmin(ModelAdmin):
     list_display = (
         "title",
         "sort_order",
-        "cta_text",
-        "cta_link",
+        "is_active",
         "updated_at",
     )
     list_editable = ("sort_order",)
@@ -171,10 +170,13 @@ class AboutModuleAdmin(ModelAdmin):
             },
         ),
         (
-            "Ordering",
+            "Display Settings",
             {
-                "fields": ("sort_order",),
-                "description": "Controls the order this module appears on the page. Lower numbers appear first.",
+                "fields": (
+                    "is_active",
+                    "sort_order",
+                ),
+                "description": "Control whether this module is shown and where it appears. Lower sort order values appear first.",
             },
         ),
         (

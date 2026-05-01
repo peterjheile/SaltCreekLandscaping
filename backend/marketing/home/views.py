@@ -18,5 +18,5 @@ class ActiveHomePageHeroContentView(generics.RetrieveAPIView):
     
 
 class AboutModuleListView(generics.ListAPIView):
-    queryset = AboutModule.objects.all()
+    queryset = AboutModule.objects.filter(is_active=True)
     serializer_class = AboutModuleSerializer

@@ -10,6 +10,7 @@ type FooterProps = {
   facebookUrl: string;
   instagramUrl: string;
   googleUrl: string;
+  serviceArea: string;
 };
 
 const Footer = ({
@@ -19,6 +20,7 @@ const Footer = ({
   facebookUrl,
   instagramUrl,
   googleUrl,
+  serviceArea
 }: FooterProps) => {
   const logoSrc = logoUrl || "/salt-creek-logo.png";
 
@@ -108,6 +110,9 @@ const Footer = ({
       <div className="mx-auto max-w-7xl px-6 py-6">
         <p className="text-center text-sm text-text">
           © {new Date().getFullYear()} {businessName}. All rights reserved.
+        </p>
+        <p className="mt-2 text-center text-sm text-text">
+          Proudly Serving {serviceArea}.
         </p>
       </div>
     </footer>

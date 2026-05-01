@@ -79,6 +79,7 @@ export default async function RootLayout({
               facebookUrl={siteSettings.facebookUrl}
               instagramUrl={siteSettings.instagramUrl}
               googleUrl={siteSettings.googleBusinessUrl}
+              serviceArea={siteSettings.serviceArea}
             />
           
         </body>

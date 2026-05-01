@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
 
@@ -19,6 +20,8 @@ type NavbarDemoProps = {
   businessName: string;
   logoUrl: string | null;
 };
+
+
 
 export default function NavbarDemo({
   businessName,
@@ -42,6 +45,16 @@ export default function NavbarDemo({
 
   const logoSrc = logoUrl || "/salt-creek-logo.png";
   const logoAlt = businessName ? `${businessName} logo` : "Logo";
+
+  const router = useRouter();
+
+  const handleMobileNavClick = (link: string) => {
+    setIsMobileMenuOpen(false);
+
+    window.setTimeout(() => {
+      router.push(link);
+    }, 240);
+  };
 
 
   const Logo = () => (
@@ -91,7 +104,10 @@ export default function NavbarDemo({
               <a
                 key={`mobile-link-${idx}`}
                 href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleMobileNavClick(item.link);
+                }}
                 className="relative text-text/70 transition-colors hover:text-primary"
               >
                 <span className="block">{item.name}</span>

@@ -22,11 +22,4 @@ class GalleryPhotoListView(generics.ListAPIView):
     serializer_class = GalleryPhotoSerializer
 
     def get_queryset(self):
-        return GalleryPhoto.objects.all().order_by("-created_at")
-
-
-class HomepageGalleryPhotoListView(generics.ListAPIView):
-    serializer_class = GalleryPhotoSerializer
-
-    def get_queryset(self):
-        return GalleryPhoto.objects.filter(show_on_homepage=True).order_by("sort_order", "-created_at")
+        return GalleryPhoto.objects.all().order_by("sort_order", "-created_at")

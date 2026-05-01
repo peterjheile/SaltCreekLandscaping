@@ -2,7 +2,7 @@ from django.urls import path
 from .views import HomepageReviewCardListView, ReviewCardListView, FAQCategoryListView
 from .views import ActiveReviewsPageContentView, ActiveFAQPageContentView, ActiveContactPageContentView, ActiveServicePageContentView, ActiveGalleryPageContentView
 from .views import ServiceCategoryListView
-from .views import GalleryPhotoListView, HomepageGalleryPhotoListView
+from .views import GalleryPhotoListView
 from .views import ActiveHomePageHeroContentView
 from .views import AboutModuleListView
 
@@ -16,8 +16,6 @@ urlpatterns = [
     path("reviews-page-content/",ActiveReviewsPageContentView.as_view(),name="reviews-page-content-active"),
 
     path("gallery/", GalleryPhotoListView.as_view(), name="gallery-photo-list"),
-    path("gallery/homepage/", HomepageGalleryPhotoListView.as_view(), name="homepage-gallery-photo-list"),
-
 
     path("faqs/", FAQCategoryListView.as_view(), name="faq-list"),
 

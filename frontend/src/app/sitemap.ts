@@ -1,34 +1,46 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://saltcreeklandscaping.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+  const lastModified = new Date("2026-05-01");
 
   return [
     {
       url: `${baseUrl}/`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 1,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/faqs`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/reviews`,
-      lastModified: new Date(),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
   ];
 }

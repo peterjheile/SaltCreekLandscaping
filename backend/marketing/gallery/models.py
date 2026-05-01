@@ -106,7 +106,6 @@ class GalleryPhoto(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="gallery/")
-    show_on_homepage = models.BooleanField(default=False)
     sort_order = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)

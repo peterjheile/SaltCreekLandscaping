@@ -40,4 +40,5 @@ export type GalleryPhoto = {
   title: string;
   description: string;
   imageUrl: string | null;
+  sortOrder: number;
 };

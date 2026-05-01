@@ -71,14 +71,12 @@ class GalleryPageContentAdmin(ModelAdmin):
 class GalleryPhotoAdmin(ModelAdmin):
     list_display = (
         "title",
-        "show_on_homepage",
         "sort_order",
         "created_at",
     )
     list_editable = (
-        "show_on_homepage",
         "sort_order",
     )
-    list_filter = ("show_on_homepage", "created_at")
+    list_filter = ("created_at",)
     search_fields = ("title", "description")
     ordering = ("sort_order", "-created_at")

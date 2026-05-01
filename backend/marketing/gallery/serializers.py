@@ -42,7 +42,6 @@ class GalleryPhotoSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "image_url",
-            "show_on_homepage",
             "sort_order",
             "created_at",
         ]

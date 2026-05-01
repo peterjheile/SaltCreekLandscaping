@@ -42,6 +42,7 @@ export function mapGalleryPhoto(
     title: data.title,
     description: data.description,
     imageUrl: data.image_url,
+    sortOrder: data.sort_order,
   };
 }
 

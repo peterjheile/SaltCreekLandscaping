@@ -1,17 +1,36 @@
 import type { NextConfig } from "next";
 
+const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
-   async rewrites() {
+
+  images: {
+    dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
+
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+        pathname: "/media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "saltcreeklandscaping.com",
+        pathname: "/media/**",
+      },
+    ],
+  },
+
+  async rewrites() {
     return [
       {
         source: "/media/:path*",
-        destination: "http://127.0.0.1:8000/media/:path*",
+        destination: `${backendUrl}/media/:path*`,
       },
     ];
-  }
-
+  },
 };
 
 export default nextConfig;

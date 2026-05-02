@@ -2,6 +2,7 @@
 
 import { Star } from "lucide-react";
 import type { ReviewCardData } from "@/features/marketing/reviews/types";
+import Image from "next/image";
 
 type ReviewCardProps = {
   data: ReviewCardData;
@@ -68,12 +69,14 @@ export function ReviewCard({ data, featured = false }: ReviewCardProps) {
             ].join(" ")}
           >
             {data.image ? (
-              <img
-                src={data.image}
-                alt={data.name}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
+            <Image
+              src={data.image}
+              alt={data.name}
+              width={80}
+              height={80}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
             ) : null}
           </div>
 

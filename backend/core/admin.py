@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 from .models import SiteSettings, BusinessHour
+from django.utils.safestring import mark_safe
 
 
 ####################### Just A Hook For Unfold to Use For Styling ######################
@@ -80,14 +81,29 @@ class SiteSettingsAdmin(ModelAdmin):
     inlines = [BusinessHourInline]
 
     fieldsets = (
-        ("Business Info", {
-            "description": "Basic branding information for your business.",
-            "fields": (
-                "business_name",
-                "tagline",
-                "logo",
-            )
-        }),
+        (
+            "Business Info",
+            {
+                "description": mark_safe(
+                    """
+                    <p>Basic branding information for your business.</p>
+
+                    <p><strong>Logo guidelines:</strong></p>
+                    <ul>
+                        <li>• Use a wide, horizontal logo. Recommended aspect ratio: <strong>3:1</strong>.</li>
+                        <li>• Transparent background preferred. PNG or SVG is best.</li>
+                        <li>• Keep the design centered with some padding.</li>
+                        <li>• Avoid very tall or square images, since they may not display well in the navbar.</li>
+                    </ul>
+                    """
+                ),
+                "fields": (
+                    "business_name",
+                    "tagline",
+                    "logo",
+                ),
+            },
+        ),
         ("Contact Info", {
             "description": "Primary ways customers can contact you.",
             "fields": (

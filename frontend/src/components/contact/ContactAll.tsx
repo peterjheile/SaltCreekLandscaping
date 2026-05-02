@@ -14,6 +14,7 @@ import type { ContactHeroContent } from "@/features/marketing/contact/types";
 import { useSiteSettings } from "@/features/core/providers";
 import { submitContactMessage } from "@/features/messaging/api";
 import { CONTACT_MESSAGE_PRESETS } from "@/features/messaging/presets";
+import Image from "next/image";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -179,10 +180,16 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${heroImageUrl}')` }}
+      <div className="absolute inset-0">
+        <Image
+          src={heroImageUrl}
+          alt={"Hero background"}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
+      </div>
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28">

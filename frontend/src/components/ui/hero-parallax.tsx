@@ -11,6 +11,7 @@ import {
 } from "motion/react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import type { GalleryPhoto } from "@/features/marketing/gallery/types";
+import Image from "next/image";
 
 type HomepageGallerySectionProps = {
   photos: GalleryPhoto[];
@@ -122,11 +123,14 @@ function Lightbox({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative max-h-[70vh] w-full overflow-hidden rounded-2xl">
-          <img
-            src={image.imageUrl ?? ""}
-            alt={image.title}
-            className="max-h-[70vh] w-full object-contain"
-          />
+        <Image
+          src={image.imageUrl ?? ""}
+          alt={image.title}
+          width={1600}
+          height={1000}
+          sizes="100vw"
+          className="max-h-[70vh] w-full object-contain"
+        />
         </div>
 
         <motion.div
@@ -482,8 +486,8 @@ function PhotoCard({
         style={{ background: "var(--color-secondary)" }}
       />
 
-      <img
-        src={photo.imageUrl ?? "/lawn.png"}
+      <Image
+        src={photo.imageUrl ?? ""}
         alt={photo.title}
         className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
         loading="lazy"

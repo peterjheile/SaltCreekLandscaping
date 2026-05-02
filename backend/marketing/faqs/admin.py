@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from .models import FAQPageContent, FAQCategory, FAQ
 
@@ -35,11 +36,29 @@ class FAQPageContentAdmin(ModelAdmin):
                     "eyebrow",
                     "title",
                     "subtitle",
-                    "hero_image",
-                    "hero_image_preview",
                 ),
             },
         ),
+        ("Hero Image", {
+            "description": mark_safe(
+                """
+                <p>Hero image displayed at the top of the homepage.</p>
+
+                <p><strong>Hero image guidelines:</strong></p>
+                <ul>
+                    <li>• Use a wide, landscape image. Recommended aspect ratio: <strong>16:9 or wider</strong>.</li>
+                    <li>• Upload a high-quality image, ideally at least <strong>1920px wide</strong>.</li>
+                    <li>• Keep the main subject near the <strong>center</strong> of the image.</li>
+                    <li>• The image will be <strong>cropped differently on mobile and desktop</strong> screens.</li>
+                    <li>• Avoid placing important text or logos inside the image.</li>
+                </ul>
+                """
+            ),
+            "fields": (
+                "hero_image",
+                "hero_image_preview",
+            ),
+        }),
         (
             "Timestamps",
             {

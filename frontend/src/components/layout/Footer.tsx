@@ -2,6 +2,7 @@
 
 import { FaFacebook, FaInstagram, FaGoogle } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 type FooterProps = {
   businessName: string;
@@ -31,11 +32,13 @@ const Footer = ({
           {/* Logo + Branding */}
           <div className="flex flex-col items-center gap-4 md:items-start">
             <a href="/">
-              <img
-                src={logoSrc}
-                alt={`${businessName} logo`}
-                className="h-10 w-auto object-contain"
-              />
+            <Image
+              src={logoSrc}
+              alt={`${businessName} logo`}
+              width={300}
+              height={100}
+              className="h-10 w-auto object-contain"
+            />
             </a>
 
             <p className="max-w-sm text-center text-sm text-text md:text-left">

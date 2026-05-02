@@ -9,6 +9,7 @@ import type {
   GalleryPhoto,
 } from "@/features/marketing/gallery/types";
 
+
 import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
 
 type GalleryImageWithAspect = GalleryPhoto & {
@@ -160,11 +161,14 @@ function Lightbox({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative max-h-[70vh] w-full overflow-hidden rounded-2xl">
-          <img
-            src={image.imageUrl ?? ""}
-            alt={image.title}
-            className="max-h-[70vh] w-full object-contain"
-          />
+        <Image
+          src={image.imageUrl ?? ""}
+          alt={image.title}
+          width={1600}
+          height={1000}
+          sizes="100vw"
+          className="max-h-[70vh] w-full object-contain"
+        />
         </div>
 
         <motion.div
@@ -210,11 +214,12 @@ function GalleryCard({
       whileHover={{ scale: 1.015, transition: { duration: 0.2 } }}
     >
       <div className={`relative w-full overflow-hidden ${aspect}`}>
-        <img
+        <Image
           src={image.imageUrl ?? "/lawn.png"}
           alt={image.title}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          loading="lazy"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
@@ -264,10 +269,16 @@ function GalleryHero({
 
   return (
     <section className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('${heroImageUrl}')` }}
-      />
+      <div className="absolute inset-0">
+        <Image
+          src={heroImageUrl}
+          alt="Hero background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </div>
       <div className="absolute inset-0 bg-black/50" />
 
       <div className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28">

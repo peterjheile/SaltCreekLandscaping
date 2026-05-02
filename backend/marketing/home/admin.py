@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from .models import HomePageHeroContent, AboutModule
 
@@ -64,7 +65,21 @@ class HomePageHeroContentAdmin(ModelAdmin):
         ),
         (
             "Media",
-            {
+            {            
+                "description": mark_safe(
+                """
+                <p>Hero image displayed at the top of the homepage.</p>
+
+                <p><strong>Hero image guidelines:</strong></p>
+                <ul>
+                    <li>• Use a wide, landscape image. Recommended aspect ratio: <strong>16:9 or wider</strong>.</li>
+                    <li>• Upload a high-quality image, ideally at least <strong>1920px wide</strong>.</li>
+                    <li>• Keep the main subject near the <strong>center</strong> of the image.</li>
+                    <li>• The image will be <strong>cropped differently on mobile and desktop</strong> screens.</li>
+                    <li>• Avoid placing important text or logos inside the image.</li>
+                </ul>
+                """
+            ),
                 "fields": (
                     "hero_image",
                     "image_preview",
@@ -156,7 +171,18 @@ class AboutModuleAdmin(ModelAdmin):
                     "image",
                     "image_alt",
                 ),
-                "description": "Upload an image and provide alt text for accessibility and SEO.",
+                "description": mark_safe(
+                    """
+                    <p>Upload an image and provide alt text for accessibility and SEO.</p>
+
+                    <p><strong>Image guidelines:</strong></p>
+                    <ul>
+                        <li>• Images with a <strong>4:3 aspect ratio</strong> tend to display best in this section.</li>
+                        <li>• Other ratios will still work, but may be <strong>cropped to fit</strong> different screen sizes.</li>
+                        <li>• Keep the main subject <strong>centered</strong> in the image.</li>
+                        <li>• Avoid placing important content near the edges.</li>
+                    </ul>
+                    """)
             },
         ),
         (

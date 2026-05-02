@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Plus, CheckCircle2, Clock3, MapPin } from "lucide-react";
+import Image from "next/image"
 
 
 import type {
@@ -109,10 +110,16 @@ export default function FAQsAll({
     <main className="min-h-screen overflow-x-hidden bg-white">
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${heroImageUrl}')` }}
+      <div className="absolute inset-0">
+        <Image
+          src={heroImageUrl}
+          alt="Hero background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
+      </div>
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-28">

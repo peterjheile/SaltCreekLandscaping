@@ -13,6 +13,8 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 
+import NextImage from "next/image";
+
 import type { HomePageHeroContent } from "@/features/marketing/home/types";
 import { useSiteSettings } from "@/features/core/providers";
 import { useQuoteRequestModal } from "@/features/quote-request/useQuoteRequestModel";
@@ -96,10 +98,15 @@ export default function HeroHeader({ heroContent }: HeroHeaderProps) {
     >
     {heroContent.imageUrl && heroImageLoaded ? (
       <>
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700"
-          style={{ backgroundImage: `url('${heroContent.imageUrl}')` }}
-        />
+        <div className="absolute inset-0 transition-opacity duration-700">
+          <NextImage
+            src={heroContent.imageUrl}
+            alt={"Hero background"}
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/45" />
       </>
     ) : null}

@@ -13,7 +13,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
 import { useQuoteRequestModal } from "@/features/quote-request/QuoteRequestModalProvider";
 
 type NavbarDemoProps = {
@@ -58,9 +58,12 @@ export default function NavbarDemo({
 
 
   const Logo = () => (
-    <img
+    <Image
       src={logoSrc}
       alt={logoAlt}
+      width={300}
+      height={100}
+      priority
       className="h-10 w-auto object-contain"
     />
   );

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { AboutModule } from "@/features/marketing/home/types";
+import Image from "next/image";
 
 type StickyScrollProps = {
   content: AboutModule[];
@@ -181,11 +182,13 @@ export const StickyScroll = ({
 
                   {item.image && (
                     <div className="mt-6 w-full md:mt-8 md:max-w-2xl lg:hidden">
-                      <div className="overflow-hidden rounded-2xl">
-                        <img
+                      <div className="relative overflow-hidden rounded-2xl h-[20rem] sm:h-[22rem] md:h-[24rem]">
+                        <Image
                           src={item.image}
                           alt={item.imageAlt || item.title}
-                          className="h-[20rem] w-full object-cover sm:h-[22rem] md:h-[24rem]"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover"
                         />
                       </div>
                     </div>

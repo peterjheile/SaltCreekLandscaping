@@ -222,7 +222,7 @@ export default function QuoteRequestModal({
 
                       <p className="mt-4 max-w-2xl text-sm leading-7 text-text/70">
                         Tell us a little about what you need and we’ll follow up
-                        with a quote. No pressure.
+                        with a quote.
                       </p>
 
                       <form

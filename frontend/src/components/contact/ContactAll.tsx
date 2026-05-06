@@ -69,7 +69,7 @@ export default function ContactAll({ heroContent }: ContactAllProps) {
   const title = heroContent?.title || "Let's talk about your lawn";
   const subtitle =
     heroContent?.subtitle ||
-    "Free quotes, no pressure. We typically respond within one business day.";
+    "Free quotes. We typically respond within one business day.";
   const heroImageUrl = heroContent?.heroImageUrl || "/lawn.png";
 
   const phone = siteSettings.phone || "(000) 000-0000";

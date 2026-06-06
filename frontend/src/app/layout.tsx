@@ -35,8 +35,12 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Salt Creek Landscaping",
-  description: "Professional lawn care and landscaping services",
+  title: {
+    default: "Salt Creek Landscaping",
+    template: "%s",
+  },
+  description:
+    "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
 };
 
 export default async function RootLayout({

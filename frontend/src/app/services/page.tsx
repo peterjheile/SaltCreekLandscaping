@@ -1,5 +1,10 @@
 import ServicesRoute from "@/components/services/ServicesSection";
-import BackgroundGradient from "@/components/ui/background-gradient";
+
+export const metadata = {
+  title: "Landscaping & Hardscaping Services | Salt Creek Landscaping",
+  description:
+    "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
+};
 
 export default function ServicesPage(){
 

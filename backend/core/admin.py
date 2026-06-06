@@ -104,48 +104,87 @@ class SiteSettingsAdmin(ModelAdmin):
                 ),
             },
         ),
-        ("Contact Info", {
-            "description": "Primary ways customers can contact you.",
-            "fields": (
-                "phone",
-                "email",
-            )
-        }),
-        ("Address", {
-            "description": "Physical location and service coverage.",
-            "fields": (
-                "address",
-                "city",
-                "state",
-                "zip_code",
-                "service_area",
-            )
-        }),
-        ("Social Links", {
-            "description": "Links to your social and business profiles.",
-            "fields": (
-                "facebook_url",
-                "instagram_url",
-                "google_business_url",
-            )
-        }),
-        ("Theme Colors", {
-            "description": "Controls the entire website color scheme.",
-            "fields": (
-                "primary_color",
-                "secondary_color",
-                "highlight_color",
-                "text_color",
-                "text_inverse_color",
-            )
-        }),
-        ("Metadata", {
-            "description": "Automatically managed timestamps.",
-            "fields": (
-                "created_at",
-                "updated_at",
-            )
-        }),
+        (
+            "SEO & Social Sharing",
+            {
+                "description": mark_safe(
+                    """
+                    <p>Controls how the website appears in search engines and when shared through links. Neither the description or image are gaurunteed
+                    to be used; however, this can help hint what will actually be shown.</p>
+
+                    <p><strong>SEO image guidelines:</strong></p>
+                    <ul>
+                        <li>• Recommended size: <strong>1200 × 630 pixels</strong>.</li>
+                        <li>• Use a landscape image with the most important content centered.</li>
+                        <li>• This image is used for Facebook, LinkedIn, Discord, iMessage, and other link previews.</li>
+                        <li>• Google may use this image, but search result images are not guaranteed.</li>
+                    </ul>
+                    """
+                ),
+                "fields": (
+                    "seo_title",
+                    "seo_description",
+                    "seo_image",
+                ),
+            },
+        ),
+        (
+            "Contact Info",
+            {
+                "description": "Primary ways customers can contact you.",
+                "fields": (
+                    "phone",
+                    "email",
+                ),
+            },
+        ),
+        (
+            "Address",
+            {
+                "description": "Physical location and service coverage.",
+                "fields": (
+                    "address",
+                    "city",
+                    "state",
+                    "zip_code",
+                    "service_area",
+                ),
+            },
+        ),
+        (
+            "Social Links",
+            {
+                "description": "Links to your social and business profiles.",
+                "fields": (
+                    "facebook_url",
+                    "instagram_url",
+                    "google_business_url",
+                ),
+            },
+        ),
+        (
+            "Theme Colors",
+            {
+                "description": "Controls the entire website color scheme.",
+                "fields": (
+                    "primary_color",
+                    "secondary_color",
+                    "highlight_color",
+                    "text_color",
+                    "text_inverse_color",
+                ),
+            },
+        ),
+        (
+            "Metadata",
+            {
+                "description": "Automatically managed timestamps.",
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                ),
+            },
+        ),
     )
 
     readonly_fields = ("created_at", "updated_at")

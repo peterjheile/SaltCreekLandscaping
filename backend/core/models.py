@@ -11,11 +11,30 @@ hex_color_validator = RegexValidator(
 class SiteSettings(models.Model):
     business_name = models.CharField(max_length=255)
     tagline = models.CharField(max_length=255, blank=True)
+
     logo = models.ImageField(
         upload_to="site/",
         blank=True,
         null=True,
         help_text="Main website logo used in the navbar and branding.",
+    )
+
+    seo_title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Default title used for search engines (Google) and social sharing.",
+    )
+
+    seo_description = models.TextField(
+        blank=True,
+        help_text="Default description used for search engines (Google) and social sharing.",
+    )
+
+    seo_image = models.ImageField(
+        upload_to="site/seo/",
+        blank=True,
+        null=True,
+        help_text="Image used for search engines (Google) and social sharing. Recommended size: 1200x630 pixels.",
     )
 
     phone = models.CharField(max_length=50, blank=True)
@@ -42,24 +61,28 @@ class SiteSettings(models.Model):
         validators=[hex_color_validator],
         help_text="Main brand color in hex format, e.g. #013220",
     )
+
     secondary_color = models.CharField(
         max_length=7,
         default="#ada18c",
         validators=[hex_color_validator],
         help_text="Secondary brand color in hex format, e.g. #ada18c",
     )
+
     highlight_color = models.CharField(
         max_length=7,
         default="#c49c48",
         validators=[hex_color_validator],
         help_text="Highlight color in hex format, e.g. #c49c48",
     )
+
     text_color = models.CharField(
         max_length=7,
         default="#000000",
         validators=[hex_color_validator],
         help_text="Default text color in hex format, e.g. #000000",
     )
+
     text_inverse_color = models.CharField(
         max_length=7,
         default="#ffffff",
@@ -81,6 +104,7 @@ class SiteSettings(models.Model):
 
     def __str__(self):
         return self.business_name or "Site Settings"
+
 
 
 class BusinessHour(models.Model):

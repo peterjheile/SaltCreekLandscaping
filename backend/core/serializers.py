@@ -17,7 +17,9 @@ class BusinessHourSerializer(serializers.ModelSerializer):
 
 class SiteSettingsSerializer(serializers.ModelSerializer):
     business_hours = BusinessHourSerializer(many=True, read_only=True)
+
     logo_url = serializers.SerializerMethodField()
+    seo_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = SiteSettings
@@ -25,6 +27,9 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             "business_name",
             "tagline",
             "logo_url",
+            "seo_title",
+            "seo_description",
+            "seo_image_url",
             "phone",
             "email",
             "address",
@@ -45,8 +50,22 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
 
     def get_logo_url(self, obj):
         request = self.context.get("request")
+
         if obj.logo:
             if request:
                 return request.build_absolute_uri(obj.logo.url)
+
             return obj.logo.url
+
+        return None
+
+    def get_seo_image_url(self, obj):
+        request = self.context.get("request")
+
+        if obj.seo_image:
+            if request:
+                return request.build_absolute_uri(obj.seo_image.url)
+
+            return obj.seo_image.url
+
         return None

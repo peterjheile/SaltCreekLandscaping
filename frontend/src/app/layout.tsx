@@ -35,7 +35,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const FALLBACK_TITLE = "Salt Creek Landscaping";
+const FALLBACK_TITLE = "Salt Creek Landscaping | Bloomington, IN Landscaping, Hardscaping & Lawn Care";
 const FALLBACK_DESCRIPTION = "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.";
 
 export async function generateMetadata(): Promise<Metadata> {

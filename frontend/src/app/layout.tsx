@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import { Geist } from "next/font/google";
 import { Cinzel, Montserrat, Inter } from "next/font/google";
 import type { CSSProperties } from "react";
+import type { Metadata } from "next";
 
 import { getSiteSettings } from "@/features/core/api";
 import { SiteSettingsProvider } from "@/features/core/providers";
@@ -34,13 +35,42 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://saltcreeklandscaping.com"),
+
   title: {
     default: "Salt Creek Landscaping",
     template: "%s",
   },
+
   description:
     "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
+
+  openGraph: {
+    title: "Salt Creek Landscaping",
+    description:
+      "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
+    url: "https://saltcreeklandscaping.com",
+    siteName: "Salt Creek Landscaping",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Salt Creek Landscaping in Bloomington, Indiana",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Salt Creek Landscaping",
+    description:
+      "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default async function RootLayout({
@@ -66,28 +96,26 @@ export default async function RootLayout({
     >
       <SiteSettingsProvider value={siteSettings}>
         <ServiceProvider serviceCategories={serviceCategories}>
-        <QuoteRequestModalProvider>
-        <body className="overflow-x-hidden text-text" style={themeVars}>
-          
-            <Navbar
-              businessName={siteSettings.businessName}
-              logoUrl={siteSettings.logoUrl}
-            />
+          <QuoteRequestModalProvider>
+            <body className="overflow-x-hidden text-text" style={themeVars}>
+              <Navbar
+                businessName={siteSettings.businessName}
+                logoUrl={siteSettings.logoUrl}
+              />
 
-            <main className="mt-16 lg:mt-20">{children}</main>
+              <main className="mt-16 lg:mt-20">{children}</main>
 
-            <Footer
-              businessName={siteSettings.businessName}
-              tagline={siteSettings.tagline}
-              logoUrl={siteSettings.logoUrl}
-              facebookUrl={siteSettings.facebookUrl}
-              instagramUrl={siteSettings.instagramUrl}
-              googleUrl={siteSettings.googleBusinessUrl}
-              serviceArea={siteSettings.serviceArea}
-            />
-          
-        </body>
-        </QuoteRequestModalProvider>
+              <Footer
+                businessName={siteSettings.businessName}
+                tagline={siteSettings.tagline}
+                logoUrl={siteSettings.logoUrl}
+                facebookUrl={siteSettings.facebookUrl}
+                instagramUrl={siteSettings.instagramUrl}
+                googleUrl={siteSettings.googleBusinessUrl}
+                serviceArea={siteSettings.serviceArea}
+              />
+            </body>
+          </QuoteRequestModalProvider>
         </ServiceProvider>
       </SiteSettingsProvider>
     </html>

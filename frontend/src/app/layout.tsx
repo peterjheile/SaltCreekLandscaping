@@ -35,7 +35,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const FALLBACK_TITLE = "Salt Creek Landscaping | Bloomington, IN Landscaping, Hardscaping & Lawn Care";
+const FALLBACK_TITLE = "Salt Creek Landscaping | Bloomington, IN Landscaping & Hardscaping"
 const FALLBACK_DESCRIPTION = "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -62,7 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: "https://saltcreeklandscaping.com",
-      siteName: title,
+      siteName: "Salt Creek Landscaping",
       images: [
         {
           url: image,
@@ -77,7 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     twitter: {
       card: "summary_large_image",
-      title,
+      title: "Salt Creek Landscaping",
       description,
       images: [image],
     },

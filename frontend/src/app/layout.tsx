@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     siteSettings.seoDescription || FALLBACK_DESCRIPTION;
 
-  const image = siteSettings.seoImageUrl || "/og-image.jpg";
+  const image = siteSettings.seoImageUrl || "/og-image.png";
 
   return {
     metadataBase: new URL("https://saltcreeklandscaping.com"),

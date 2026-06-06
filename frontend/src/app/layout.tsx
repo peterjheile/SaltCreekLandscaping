@@ -35,43 +35,54 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://saltcreeklandscaping.com"),
+const FALLBACK_TITLE = "Salt Creek Landscaping";
+const FALLBACK_DESCRIPTION = "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.";
 
-  title: {
-    default: "Salt Creek Landscaping",
-    template: "%s",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
 
-  description:
-    "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
+  const title = siteSettings.seoTitle || FALLBACK_TITLE;
 
-  openGraph: {
-    title: "Salt Creek Landscaping",
-    description:
-      "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
-    url: "https://saltcreeklandscaping.com",
-    siteName: "Salt Creek Landscaping",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Salt Creek Landscaping in Bloomington, Indiana",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
+  const description =
+    siteSettings.seoDescription || FALLBACK_DESCRIPTION;
 
-  twitter: {
-    card: "summary_large_image",
-    title: "Salt Creek Landscaping",
-    description:
-      "Salt Creek Landscaping is a local, owner-operated company based in Bloomington, Indiana. We handle lawn care, landscaping, tree work, and hardscaping for homeowners who want their property done right.",
-    images: ["/og-image.jpg"],
-  },
-};
+  const image = siteSettings.seoImageUrl || "/og-image.jpg";
+
+  return {
+    metadataBase: new URL("https://saltcreeklandscaping.com"),
+
+    title: {
+      default: title,
+      template: "%s",
+    },
+
+    description,
+
+    openGraph: {
+      title,
+      description,
+      url: "https://saltcreeklandscaping.com",
+      siteName: title,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
 
 export default async function RootLayout({
   children,

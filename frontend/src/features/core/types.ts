@@ -11,6 +11,9 @@ export type SiteSettingsApi = {
   business_name: string;
   tagline: string;
   logo_url: string | null;
+  seo_title: string;
+  seo_description: string;
+  seo_image_url: string | null;
   phone: string;
   email: string;
   address: string;
@@ -42,6 +45,9 @@ export type SiteSettings = {
   businessName: string;
   tagline: string;
   logoUrl: string | null;
+  seoTitle: string;
+  seoDescription: string;
+  seoImageUrl: string | null;
   phone: string;
   email: string;
   address: string;

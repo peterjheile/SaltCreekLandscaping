@@ -110,7 +110,10 @@ class SiteSettingsAdmin(ModelAdmin):
                 "description": mark_safe(
                     """
                     <p>Controls how the website appears in search engines and when shared through links. Neither the description or image are gaurunteed
-                    to be used; however, this can help hint what will actually be shown.</p>
+                    to be used; however, this can help hint what will actually be shown.
+                    
+                    NOTE: For seach engines (such as Google), this data can take 1-2 weeks to update (sometimes longer); however, for general use such as the image appearing when you attach a link it should be much faster (appx 12 hours max).
+                    </p>
 
                     <p><strong>SEO image guidelines:</strong></p>
                     <ul>

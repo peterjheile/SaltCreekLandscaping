@@ -5,7 +5,6 @@ import type {
   BusinessHour,
 } from "./types";
 
-
 function mapBusinessHour(data: BusinessHourApi): BusinessHour {
   return {
     id: data.id,
@@ -17,12 +16,14 @@ function mapBusinessHour(data: BusinessHourApi): BusinessHour {
   };
 }
 
-
 export function mapSiteSettings(data: SiteSettingsApi): SiteSettings {
   return {
     businessName: data.business_name,
     tagline: data.tagline,
     logoUrl: data.logo_url,
+    seoTitle: data.seo_title,
+    seoDescription: data.seo_description,
+    seoImageUrl: data.seo_image_url,
     phone: data.phone,
     email: data.email,
     address: data.address,
@@ -42,12 +43,14 @@ export function mapSiteSettings(data: SiteSettingsApi): SiteSettings {
   };
 }
 
-
 export function getSiteSettingsFallback(): SiteSettings {
   return {
     businessName: "",
     tagline: "",
     logoUrl: null,
+    seoTitle: "",
+    seoDescription: "",
+    seoImageUrl: null,
     phone: "",
     email: "",
     address: "",

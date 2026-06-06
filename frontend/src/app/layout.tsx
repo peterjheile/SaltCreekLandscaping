@@ -59,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
 
     openGraph: {
-      title,
+      title:"Salt Creek Landscaping",
       description,
       url: "https://saltcreeklandscaping.com",
       siteName: "Salt Creek Landscaping",

@@ -123,7 +123,7 @@ export default function NavbarDemo({
                 variant="primary"
                 className={`w-full ${buttonStyles}`}
               >
-                Book a Quote
+                Request a Quote
               </NavbarButton>
             </div>
           </MobileNavMenu>

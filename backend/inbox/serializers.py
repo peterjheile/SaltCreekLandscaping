@@ -24,6 +24,7 @@ class QuoteRequestSerializer(serializers.ModelSerializer):
             "name",
             "email",
             "phone",
+            "address",  # or "service_address"
             "service_category",
             "message",
             "hp",

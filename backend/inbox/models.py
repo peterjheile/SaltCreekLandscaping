@@ -46,6 +46,12 @@ class QuoteRequest(models.Model):
         help_text="Optional phone number for follow-up",
     )
 
+    address = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Optional service address.",
+    )
+
     service_category = models.ForeignKey(
         "marketing.ServiceCategory",
         on_delete=models.SET_NULL,

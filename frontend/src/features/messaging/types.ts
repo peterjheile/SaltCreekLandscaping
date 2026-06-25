@@ -15,6 +15,7 @@ export type QuoteRequestPayload = {
   name: string;
   email: string;
   phone?: string;
+  address?: string;
   service_category?: string; // UUID (FK id)
   message: string;
   hp?: string;

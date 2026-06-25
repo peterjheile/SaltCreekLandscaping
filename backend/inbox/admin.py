@@ -33,16 +33,20 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         "name",
         "email",
         "phone",
+        "address",
         "display_service_category",
         "created_at",
     )
+
     search_fields = (
         "name",
         "email",
         "phone",
+        "address",
         "service_category_title",
         "message",
     )
+
     ordering = ("-created_at",)
 
     readonly_fields = (
@@ -50,6 +54,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         "name",
         "email",
         "phone",
+        "address",
         "service_category",
         "service_category_title",
         "message",

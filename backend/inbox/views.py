@@ -125,6 +125,7 @@ class QuoteRequestCreateView(CreateAPIView):
             f"Name: {quote_request.name}\n"
             f"Email: {quote_request.email}\n"
             f"Phone: {quote_request.phone or 'Not provided'}\n"
+            f"Address: {quote_request.address or 'Not provided'}\n"
             f"Service Category: {selected_category}\n\n"
             f"Message:\n{quote_request.message}\n"
         )

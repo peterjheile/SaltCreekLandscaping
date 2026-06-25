@@ -80,7 +80,7 @@ function ServicesHero({ heroContent }: ServicesHeroProps) {
               className="inline-flex hover:cursor-pointer items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-text transition hover:opacity-90"
               onClick = {() => openQuoteRequestModal()}
             >
-              Book a Quote
+              Request a Quote
               <svg
                 className="h-4 w-4"
                 fill="none"

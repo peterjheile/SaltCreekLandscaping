@@ -27,6 +27,7 @@ export default function QuoteRequestModal({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [serviceCategoryId, setServiceCategoryId] = useState(
     initialServiceCategoryId ?? ""
   );
@@ -76,6 +77,7 @@ export default function QuoteRequestModal({
     setName("");
     setEmail("");
     setPhone("");
+    setAddress("");
     setServiceCategoryId(initialServiceCategoryId ?? "");
     setMessage("");
     setHp("");
@@ -108,6 +110,7 @@ export default function QuoteRequestModal({
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
+        address: address.trim(),
         service_category: serviceCategoryId || undefined,
         message: message.trim(),
         hp,
@@ -217,7 +220,7 @@ export default function QuoteRequestModal({
                       </p>
 
                       <h2 className="text-3xl font-bold text-primary sm:text-4xl">
-                        Request a quote
+                        Request a Quote
                       </h2>
 
                       <p className="mt-4 max-w-2xl text-sm leading-7 text-text/70">
@@ -311,87 +314,114 @@ export default function QuoteRequestModal({
                             />
                           </div>
 
-                          <div className="flex flex-col">
+                          <div className="flex flex-col gap-1.5">
                             <label
-                              htmlFor="quote-service-category"
-                              className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-primary"
+                              htmlFor="quote-address"
+                              className="text-xs font-semibold uppercase tracking-wider text-primary"
                             >
-                              Service category
+                              Service Address{" "}
+                              <span className="text-text/45 normal-case">
+                                (optional)
+                              </span>
                             </label>
 
-                            <div className="relative flex items-center gap-2">
-                              <select
-                                id="quote-service-category"
-                                value={serviceCategoryId}
-                                onChange={(e) =>
-                                  setServiceCategoryId(e.target.value)
-                                }
-                                className="w-full rounded-xl border border-primary/20 bg-white px-4 py-3 text-sm text-text outline-none transition focus:ring-2"
-                                style={
-                                  {
-                                    "--tw-ring-color":
-                                      "color-mix(in srgb, var(--color-primary) 25%, transparent)",
-                                  } as React.CSSProperties
-                                }
-                              >
-                                <option value="">Not sure / choose later</option>
-                                {serviceCategories.map((category) => (
-                                  <option key={category.id} value={category.id}>
-                                    {category.title}
-                                  </option>
-                                ))}
-                              </select>
-
-                              {selectedCategory?.includedItems?.length ? (
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setShowIncludedItems((prev) => !prev)
-                                  }
-                                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/5 text-primary transition hover:bg-primary/10"
-                                  aria-label="Show included service items"
-                                >
-                                  <Info className="h-4 w-4" />
-                                </button>
-                              ) : null}
-                            </div>
-
-                            <AnimatePresence initial={false}>
-                              {showIncludedItems &&
-                              selectedCategory?.includedItems?.length ? (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{
-                                    height: {
-                                      duration: 0.36,
-                                      ease: [0.22, 1, 0.36, 1],
-                                    },
-                                    opacity: {
-                                      duration: 0.18,
-                                      ease: "easeOut",
-                                    },
-                                  }}
-                                  className="overflow-hidden"
-                                >
-                                  <div className="mt-2 rounded-xl border border-primary/10 bg-primary/5 p-4">
-                                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary">
-                                      May Include
-                                    </p>
-
-                                    <ul className="space-y-1 text-sm text-text/80">
-                                      {selectedCategory.includedItems.map(
-                                        (item) => (
-                                          <li key={item.id}>• {item.name}</li>
-                                        )
-                                      )}
-                                    </ul>
-                                  </div>
-                                </motion.div>
-                              ) : null}
-                            </AnimatePresence>
+                            <input
+                              id="quote-address"
+                              type="text"
+                              value={address}
+                              onChange={(e) => setAddress(e.target.value)}
+                              placeholder="123 Main St, Bloomington, IN"
+                              className="rounded-xl border border-primary/20 bg-white px-4 py-3 text-sm text-text outline-none transition placeholder:text-text/40 focus:ring-2"
+                              style={
+                                {
+                                  "--tw-ring-color":
+                                    "color-mix(in srgb, var(--color-primary) 25%, transparent)",
+                                } as React.CSSProperties
+                              }
+                            />
                           </div>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="quote-service-category"
+                            className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-primary"
+                          >
+                            Service category
+                          </label>
+
+                          <div className="relative flex items-center gap-2">
+                            <select
+                              id="quote-service-category"
+                              value={serviceCategoryId}
+                              onChange={(e) =>
+                                setServiceCategoryId(e.target.value)
+                              }
+                              className="w-full rounded-xl border border-primary/20 bg-white px-4 py-3 text-sm text-text outline-none transition focus:ring-2"
+                              style={
+                                {
+                                  "--tw-ring-color":
+                                    "color-mix(in srgb, var(--color-primary) 25%, transparent)",
+                                } as React.CSSProperties
+                              }
+                            >
+                              <option value="">Not sure / choose later</option>
+                              {serviceCategories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                  {category.title}
+                                </option>
+                              ))}
+                            </select>
+
+                            {selectedCategory?.includedItems?.length ? (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setShowIncludedItems((prev) => !prev)
+                                }
+                                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/5 text-primary transition hover:bg-primary/10"
+                                aria-label="Show included service items"
+                              >
+                                <Info className="h-4 w-4" />
+                              </button>
+                            ) : null}
+                          </div>
+
+                          <AnimatePresence initial={false}>
+                            {showIncludedItems &&
+                            selectedCategory?.includedItems?.length ? (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{
+                                  height: {
+                                    duration: 0.36,
+                                    ease: [0.22, 1, 0.36, 1],
+                                  },
+                                  opacity: {
+                                    duration: 0.18,
+                                    ease: "easeOut",
+                                  },
+                                }}
+                                className="overflow-hidden"
+                              >
+                                <div className="mt-2 rounded-xl border border-primary/10 bg-primary/5 p-4">
+                                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary">
+                                    May Include
+                                  </p>
+
+                                  <ul className="space-y-1 text-sm text-text/80">
+                                    {selectedCategory.includedItems.map(
+                                      (item) => (
+                                        <li key={item.id}>• {item.name}</li>
+                                      )
+                                    )}
+                                  </ul>
+                                </div>
+                              </motion.div>
+                            ) : null}
+                          </AnimatePresence>
                         </div>
 
                         <div className="hidden" aria-hidden="true">

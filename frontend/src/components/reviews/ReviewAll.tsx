@@ -283,7 +283,7 @@ export default function ReviewAll({
               className="mt-6 hover:cursor-pointer inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-text-inverse transition hover:opacity-90"
               onClick = {() => openQuoteRequestModal()}
             >
-              Book a Free Quote
+              Request a Free Quote
             </div>
           </motion.div>
         </div>

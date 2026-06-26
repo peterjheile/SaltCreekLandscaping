@@ -88,7 +88,7 @@ export default function NavbarDemo({
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
             <NavbarButton variant="primary" className={`${buttonStyles}`} onClick={() => openQuoteRequestModal()}>
-              Book Quote
+              Request Quote
             </NavbarButton>
           </div>
         </NavBody>

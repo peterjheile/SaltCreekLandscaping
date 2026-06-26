@@ -192,7 +192,7 @@ class AboutModuleAdmin(ModelAdmin):
                     "cta_text",
                     "cta_link",
                 ),
-                "description": "Optional button. Add text and a link if you want users to take action (e.g., book a service).",
+                "description": "Optional button. Add text and a link if you want users to take action (e.g., Request a service).",
             },
         ),
         (
